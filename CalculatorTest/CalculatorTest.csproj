@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TPUM\TPUM.csproj" />
+    <ProjectReference Include="..\TPUM\Model.csproj" />
   </ItemGroup>
 
 </Project>

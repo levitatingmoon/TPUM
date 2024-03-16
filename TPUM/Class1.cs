@@ -1,4 +1,4 @@
-﻿namespace TPUM
+﻿namespace Model
 {
     public class Calculator
     {
