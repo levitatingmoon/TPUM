@@ -1,7 +1,10 @@
 ﻿namespace Model
 {
-    public class Class1
+    public class Calculator
     {
-
+        public int Subtract(int x, int y)
+        {
+            return x - y;
+        }
     }
 }
