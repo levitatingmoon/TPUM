@@ -13,6 +13,6 @@ namespace Data
 
         public void AddItems(List<IItem> items);
         public void RemoveItems(List<IItem> items);
-        public List<IItem> GetItemsOfType(ItemType type);
+        public List<IItem> GetItemsOfType(ItemType type); 
     }
 }
