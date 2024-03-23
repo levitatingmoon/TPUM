@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public interface IShopInventory
+    public interface IStorage
     {
         public List<IItem> ItemList { get; }
         public void AddItem(IItem item);

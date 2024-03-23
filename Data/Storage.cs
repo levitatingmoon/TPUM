@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class ShopInventory : IShopInventory
+    internal class Storage : IStorage
     {
         public List<IItem> ItemList { get; }
 
-        public ShopInventory()
+        public Storage()
         {
             ItemList = new List<IItem>();
 

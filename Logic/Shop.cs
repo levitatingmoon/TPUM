@@ -9,9 +9,9 @@ namespace Logic
 {
     public class Shop : IShop 
     {
-        private IShopInventory shopInventory;
+        private IStorage shopInventory;
 
-        public Shop(IShopInventory shopInventory)
+        public Shop(IStorage shopInventory)
         {
             this.shopInventory = shopInventory;
 

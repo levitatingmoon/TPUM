@@ -3,13 +3,13 @@ using Data;
 namespace DataTest
 {
     [TestClass]
-    public class ShopInventoryTest
+    public class DataLayerTest
     {
 
-        private IShopInventory? inventory;
+        private IStorage? inventory;
 
         [TestInitialize]
-        public void TestMethod1()
+        public void TestMethod()
         {
 
             inventory = IDataLayer.Create().shopInventory;

@@ -8,18 +8,18 @@ namespace Data
 {
     internal class DataLayer : IDataLayer
     {
-        public IShopInventory shopInventory { get; set; }
+        public IStorage shopInventory { get; set; }
 
         public static DataLayer Create()
         {
             return new DataLayer();
         }
 
-        internal DataLayer(IShopInventory inventory = default)
+        internal DataLayer(IStorage inventory = default)
         {
             if(inventory == null)
             {
-                this.shopInventory = new ShopInventory();
+                this.shopInventory = new Storage();
             } else
             {
                 this.shopInventory = inventory;
