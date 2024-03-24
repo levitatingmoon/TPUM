@@ -9,7 +9,7 @@ namespace Data
     public interface IItem
     {
         string name { get; }
-        float price { get; }
+        float price { get; set; }
         Guid id { get; }
         ItemType type { get; }
     }

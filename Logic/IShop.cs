@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,10 @@ namespace Logic
 {
     public interface IShop
     {
+        public event EventHandler<PriceChangedEventArgs> PriceChanged;
 
+        List<ShopItem> GetWeapons(bool onSale = true);
+        bool Sell(List<ShopItem> items);
 
     }
 }
