@@ -8,11 +8,11 @@ namespace Data
 {
     public interface IDataLayer
     {
-        IStorage shopInventory { get; set; }
+        IStorage Storage { get; set; }
 
-        static IDataLayer Create(IStorage inventory = default)
+        static IDataLayer Create(IStorage storage = default)
         {
-            return new DataLayer(inventory);
+            return new DataLayer(storage);
         }
     }
 }

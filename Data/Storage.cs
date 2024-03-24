@@ -9,7 +9,6 @@ namespace Data
 {
     internal class Storage : IStorage
     {
-        public event EventHandler<PriceChangedEventArgs> PriceChange;
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
 
         public List<IItem> ItemList { get; }
@@ -59,7 +58,7 @@ namespace Data
 
         private void OnPriceChanged(Guid id, float price)
         {
-            EventHandler<PriceChangedEventArgs> handler = PriceChange;
+            EventHandler<PriceChangedEventArgs> handler = PriceChanged;
             handler?.Invoke(this, new PriceChangedEventArgs(id, price));
         }
 

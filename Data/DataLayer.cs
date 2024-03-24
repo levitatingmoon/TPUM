@@ -8,21 +8,21 @@ namespace Data
 {
     internal class DataLayer : IDataLayer
     {
-        public IStorage shopInventory { get; set; }
+        public IStorage Storage { get; set; }
 
         public static DataLayer Create()
         {
             return new DataLayer();
         }
 
-        internal DataLayer(IStorage inventory = default)
+        internal DataLayer(IStorage storage = default)
         {
-            if(inventory == null)
+            if(storage == null)
             {
-                this.shopInventory = new Storage();
+                this.Storage = new Storage();
             } else
             {
-                this.shopInventory = inventory;
+                this.Storage = storage;
             }
             
         }

@@ -9,34 +9,35 @@ namespace Logic
 {
     public class Shop : IShop
     {
-        private IStorage shopInventory;
+        private IStorage Storage;
         private Discount discount;
 
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
 
-        public Shop(IStorage shopInventory)
+        public Shop(IStorage storage)
         {
-            this.shopInventory = shopInventory;
-            discount = new Discount(shopInventory);
-            shopInventory.PriceChanged += OnPriceChanged;
+            this.Storage = storage;
+            discount = new Discount(storage);
+            storage.PriceChanged += OnPriceChanged;
 
         }
 
-        public List<ShopItem> GetWeapons(bool onSale = true)
+        public List<ShopItem> GetItems(bool onSale = true)
         {
             Tuple<Guid, float> sale = new Tuple<Guid, float>(Guid.Empty, 1f);
+            
             if (onSale)
                 sale = discount.GetDiscount();
 
-            List<ShopItem> availableWeapons = new List<ShopItem>();
+            List<ShopItem> availableItems = new List<ShopItem>();
 
-            foreach (IItem item in shopInventory.ItemList)
+            foreach (IItem item in Storage.ItemList)
             {
                 float price = item.price;
                 if (item.id.Equals(sale.Item1))
                     price *= sale.Item2;
 
-                availableWeapons.Add(new ShopItem
+                availableItems.Add(new ShopItem
                 {
                     Name = item.name,
                     Price = price,
@@ -45,7 +46,7 @@ namespace Logic
                 });
             }
 
-            return availableWeapons;
+            return availableItems;
         }
 
         public bool Sell(List<ShopItem> items)
@@ -55,9 +56,9 @@ namespace Logic
             foreach (ShopItem item in items)
                 itemIDs.Add(item.Id);
 
-            List<IItem> weaponsDataLayer = shopInventory.GetItemsByID(itemIDs);
+            List<IItem> itemsDataLayer = Storage.GetItemsByID(itemIDs);
 
-            shopInventory.RemoveItems(weaponsDataLayer);
+            Storage.RemoveItems(itemsDataLayer);
 
             return true;
         }

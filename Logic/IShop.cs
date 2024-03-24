@@ -11,7 +11,7 @@ namespace Logic
     {
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
 
-        List<ShopItem> GetWeapons(bool onSale = true);
+        List<ShopItem> GetItems(bool onSale = true);
         bool Sell(List<ShopItem> items);
 
     }

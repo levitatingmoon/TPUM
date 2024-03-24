@@ -16,7 +16,7 @@ namespace Logic
         public LogicLayer(IDataLayer datalayer)
         {
             Datalayer = datalayer;
-            Shop = new Shop(Datalayer.shopInventory);
+            Shop = new Shop(Datalayer.Storage);
         }
     }
 }
