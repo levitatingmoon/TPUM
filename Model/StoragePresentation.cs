@@ -22,14 +22,14 @@ namespace Model
             handler?.Invoke(this, new Model.PriceChangedEventArgs(e.Id, e.Price));
         }
 
-        public List<ItemPresentation> GetWeapons()
+        public List<ItemPresentation> GetItems()
         {
-            List<ItemPresentation> weapons = new List<ItemPresentation>();
-            foreach (ShopItem weapon in Shop.GetItems())
+            List<ItemPresentation> items = new List<ItemPresentation>();
+            foreach (ShopItem item in Shop.GetItems())
             {
-                weapons.Add(new ItemPresentation(weapon.Name, weapon.Price, weapon.Id, weapon.Type));
+                items.Add(new ItemPresentation(item.Name, item.Price, item.Id, item.Type));
             }
-            return weapons;
+            return items;
         }
 
         public event EventHandler<Model.PriceChangedEventArgs> PriceChanged;
