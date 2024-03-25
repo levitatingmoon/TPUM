@@ -9,10 +9,10 @@ namespace Model
 {
     public abstract class ModelAbstractApi
     {
-
+        
         public static ModelAbstractApi CreateApi(ILogicLayer logicLayer = default(ILogicLayer))
         {
-            return new ModelApi(logicLayer);
+            return new ModelApi(logicLayer ?? ILogicLayer.Create());
         }
     }
 
