@@ -17,8 +17,13 @@ namespace Data
         {
             ItemList = new List<IItem>();
 
-            ItemList.Add(new Item("golden delicious", 5.0f, ItemType.Apple));
-            ItemList.Add(new Item("premium banana", 5.5f, ItemType.Banana));
+            ItemList.Add(new Item("Golden Delicious", 4.0f, ItemType.Apple));
+            ItemList.Add(new Item("Red Delicious", 5.0f, ItemType.Apple));
+            ItemList.Add(new Item("Premium Banana", 5.5f, ItemType.Banana));
+            ItemList.Add(new Item("Yellow Carrots", 4.5f, ItemType.Carrot));
+            ItemList.Add(new Item("Asian Pear", 6.0f, ItemType.Pear));
+            ItemList.Add(new Item("European Pear", 3.5f, ItemType.Pear));
+            ItemList.Add(new Item("Persian Cucumbers", 6.5f, ItemType.Cucumber));
 
         }
 

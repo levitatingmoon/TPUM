@@ -42,7 +42,33 @@
                 </StackPanel>
             </StackPanel>
         </Canvas>
-
+        <Canvas Background="DarkSeaGreen" x:Name="ShoppingCartView" Visibility="{Binding CartViewVisibility}">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Width="137">
+                    <Button Background="DarkOliveGreen" Content="Home Page" MinHeight="50" MinWidth="100" Margin="5 5" Command= "{Binding MainPageButtonClick}"/>
+                </StackPanel>
+                <StackPanel Width="505" >
+                    <ScrollViewer Height="414" Width="422">
+                        <ItemsControl ItemsSource="{Binding ShoppingCart.Items}" Width="435" Height="526">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Background="OliveDrab"  Width="200" Height="50">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center" FontSize="15" Margin="5 5" Text="{Binding Name}"/>
+                                            <TextBlock VerticalAlignment="Center" FontSize="15" Margin="5 5" Text="{Binding Price, StringFormat=0.00 zl}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Width="137">
+                    <Button Background="DarkOliveGreen" Content="Buy" MinHeight="50" MinWidth="100" Margin="5 5" Command= "{Binding BuyButtonClick}"/>
+                    <TextBlock VerticalAlignment="Center" FontSize="24" Text="{Binding CartValue, StringFormat='0.00 zl'}"/>
+                </StackPanel>
+            </StackPanel>
+        </Canvas>
     </Grid>
 
 </Window>
