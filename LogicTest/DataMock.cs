@@ -9,7 +9,7 @@ namespace LogicTest
 {
     internal class DataLayerTest : DataAbstractApi
     {
-        public IStorage Storage { get; set; }
+        public override IStorage Storage { get; set; }
 
         public DataLayerTest(IStorage storage)
         {
