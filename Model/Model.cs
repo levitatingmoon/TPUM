@@ -11,15 +11,15 @@ namespace Model
 {
     public class Model
     {
-        private ILogicLayer iLogicLayer;
+        private LogicAbstractApi iLogicLayer;
         public string MainViewVisibility;
         public string CartViewVisibility;
         public ShoppingCart ShoppingCart;
 
         public StoragePresentation StoragePresentation { get; private set; }
-        public Model(ILogicLayer? iLogicLayer)
+        public Model(LogicAbstractApi? iLogicLayer)
         {
-            this.iLogicLayer = iLogicLayer == null ? ILogicLayer.Create() : iLogicLayer;
+            this.iLogicLayer = iLogicLayer == null ? LogicAbstractApi.Create() : iLogicLayer;
             StoragePresentation = new StoragePresentation(this.iLogicLayer.Shop);
             ShoppingCart = new ShoppingCart(new ObservableCollection<ItemPresentation>(), this.iLogicLayer.Shop);
             Debug.WriteLine("Here");

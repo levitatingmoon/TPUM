@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class DataLayer : IDataLayer
+    internal class DataApi : DataAbstractApi
     {
-        public IStorage Storage { get; set; }
+        public override IStorage Storage { get; set; }
 
-        public static DataLayer Create()
-        {
-            return new DataLayer();
-        }
-
-        internal DataLayer(IStorage storage = default)
+        internal DataApi(IStorage storage = default)
         {
             if(storage == null)
             {

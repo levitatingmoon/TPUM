@@ -12,7 +12,7 @@ namespace DataTest
         public void TestMethod()
         {
 
-            inventory = IDataLayer.Create().Storage;
+            inventory = DataAbstractApi.Create().Storage;
             Assert.IsNotNull(inventory);
 
             inventory.ItemList.Clear();

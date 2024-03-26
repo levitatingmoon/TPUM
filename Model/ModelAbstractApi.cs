@@ -10,17 +10,17 @@ namespace Model
     public abstract class ModelAbstractApi
     {
         
-        public static ModelAbstractApi CreateApi(ILogicLayer logicLayer = default(ILogicLayer))
+        public static ModelAbstractApi CreateApi(LogicAbstractApi logicLayer = default(LogicAbstractApi))
         {
-            return new ModelApi(logicLayer ?? ILogicLayer.Create());
+            return new ModelApi(logicLayer ?? LogicAbstractApi.Create());
         }
     }
 
     internal class ModelApi : ModelAbstractApi
     {
-        private ILogicLayer logicLayer;
+        private LogicAbstractApi logicLayer;
 
-        public ModelApi(ILogicLayer logicLayer)
+        public ModelApi(LogicAbstractApi logicLayer)
         {
             this.logicLayer = logicLayer;
         }

@@ -6,42 +6,49 @@ namespace LogicTest
     [TestClass]
     public class LogicLayerTest
     {
-        private IStorage storage;
-        private IShop Shop;
+        private DataAbstractApi dataLayer;
+        private IShop shop;
+
 
         [TestInitialize]
-        public void TestMethod()
+        public void InitTest()
         {
-            storage = IDataLayer.Create().Storage;
-            Assert.IsNotNull(storage);
+            StorageMock storage = new StorageMock();
 
-            storage.ItemList.Clear();
-            Assert.AreEqual(0, storage.ItemList.Count);
+            List<IItem> items = new List<IItem>()
+            {
+                new Item("Gruszka Lodzka", 14.23f, ItemType.Pear),
+                new Item("Marchewka Zielona", 0.90f, ItemType.Carrot)
+            };
 
-            Shop = ILogicLayer.Create().Shop;
-            Assert.IsNotNull(Shop);
+            storage.AddItems(items);
 
+            dataLayer = new DataLayerTest(storage);
+            Assert.IsNotNull(dataLayer);
+
+            shop = new LogicLayer(dataLayer).Shop;
+            Assert.IsNotNull(shop);
         }
+
 
         [TestMethod]
         public void GetItemsTest()
         {
-            Assert.AreEqual(0, storage.ItemList.Count);
-
-            List<IItem> list = new List<IItem>()
-            {
-                new Item("Gruszka", 4f, ItemType.Pear),
-                new Item("Marchewka Zielona", 2f, ItemType.Carrot),
-                new Item("Marchewka Zielona", 2f, ItemType.Carrot)
-            };
+            List<ShopItem> shopItems = shop.GetItems();
+            Assert.IsNotNull(shopItems);
+            Assert.AreEqual(2, shopItems.Count);
+        }
 
 
-            storage.AddItems(list);
-            Assert.AreEqual(3, storage.ItemList.Count);
+        [TestMethod]
+        public void SetItemsTest() {
 
-            List<ShopItem> items = Shop.GetItems();
-            Assert.IsNotNull(items);
-            Assert.AreEqual(2, items.Count);
+            List<ShopItem> shopItems = shop.GetItems();
+            Assert.AreEqual(2, shopItems.Count);
+
+            shop.Sell(shopItems);
+            shopItems = shop.GetItems();
+            Assert.AreEqual(0, shopItems.Count);
 
         }
     }

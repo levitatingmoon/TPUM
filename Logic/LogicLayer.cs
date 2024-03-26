@@ -7,13 +7,13 @@ using Data;
 
 namespace Logic
 {
-    public class LogicLayer : ILogicLayer
+    public class LogicLayer : LogicAbstractApi
     {
-        private IDataLayer Datalayer { get; }
+        private DataAbstractApi Datalayer { get; }
 
-        public IShop Shop { get; private set; }
+        public override IShop Shop { get; }
 
-        public LogicLayer(IDataLayer datalayer)
+        public LogicLayer(DataAbstractApi datalayer)
         {
             Datalayer = datalayer;
             Shop = new Shop(Datalayer.Storage);
