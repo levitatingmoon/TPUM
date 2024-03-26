@@ -3,10 +3,46 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:View" xmlns:viewmodel="clr-namespace:ViewModel;assembly=ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
+        xmlns:local="clr-namespace:View" 
+        xmlns:viewmodel="clr-namespace:ViewModel;assembly=ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:ViewModelBase}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Background="BlanchedAlmond">
+    <Window.DataContext>
+        <viewmodel:ViewModelBase/>
+    </Window.DataContext>
+    <Grid Background="DarkSeaGreen">
+        <Canvas x:Name="MainView" Visibility="{Binding MainViewVisibility}">
+
+            <Button Background="DarkOliveGreen" Content="Cart" MinHeight="50" MinWidth="100" Command= "{Binding CartButtonClick}" 
+                    HorizontalAlignment="Left" Canvas.Left="690" Canvas.Top="5" VerticalAlignment="Center" Width="84"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="434" VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical" Width="200" Height="435">
+                    <Button Background="OliveDrab" Content="Apples" MinHeight="50" MinWidth="100" Margin="5 5" Command= "{Binding AppleButtonClick}"/>
+                    <Button Background="OliveDrab" Content="Carrots" MinHeight="50" MinWidth="100" Margin="5 5" Command= "{Binding CarrotButtonClick}"/>
+                    <Button Background="OliveDrab" Content="Pears" MinHeight="50" MinWidth="100" Margin="5 5" Command= "{Binding PearButtonClick}"/>
+                    <Button Background="OliveDrab" Content="Cucumbers" MinHeight="50" MinWidth="100" Margin="5 5" Command= "{Binding CucumberButtonClick}"/>
+                    <Button Background="OliveDrab" Content="Bananas" MinHeight="50" MinWidth="100" Margin="5 5" Command= "{Binding BananaButtonClick}"/>
+                </StackPanel>
+                <StackPanel Width="461" >
+                    <ScrollViewer Height="414" Width="397">
+                        <ItemsControl ItemsSource="{Binding Items}" Width="411" Height="526">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Background="Olive"  Width="200" Height="50" Command="{Binding Path=DataContext.ItemButtonClick, RelativeSource={RelativeSource AncestorType=ItemsControl}, Mode=Default}" CommandParameter="{Binding Id}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center" FontSize="15" Margin="5 5" Text="{Binding Name}"/>
+                                            <TextBlock VerticalAlignment="Center" FontSize="15" Margin="5 5" Text="{Binding Price, StringFormat=0.00 zl}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </StackPanel>
+        </Canvas>
 
     </Grid>
+
 </Window>

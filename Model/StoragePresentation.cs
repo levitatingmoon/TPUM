@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,12 @@ namespace Model
         public StoragePresentation(IShop shop)
         {
             Shop = shop;
-            Shop.PriceChanged += OnPriceChanged;
+            //Shop.PriceChanged += OnPriceChanged;
         }
         private void OnPriceChanged(object sender, Logic.PriceChangedEventArgs e)
         {
-            EventHandler<Model.PriceChangedEventArgs> handler = PriceChanged;
-            handler?.Invoke(this, new Model.PriceChangedEventArgs(e.Id, e.Price));
+            EventHandler<PriceChangedEventArgs> handler = PriceChanged;
+            handler?.Invoke(this, new PriceChangedEventArgs(e.Id, e.Price));
         }
 
         public List<ItemPresentation> GetItems()
@@ -32,7 +33,7 @@ namespace Model
             return items;
         }
 
-        public event EventHandler<Model.PriceChangedEventArgs> PriceChanged;
+        public event EventHandler<PriceChangedEventArgs> PriceChanged;
     }
 }
 
