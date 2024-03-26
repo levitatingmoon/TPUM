@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Model;
-using Logic;
 
 namespace ViewModel
 {

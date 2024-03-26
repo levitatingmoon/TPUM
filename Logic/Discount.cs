@@ -24,6 +24,9 @@ namespace Logic
         {
             Storage = storage;
             ItemOnSaleTimer = new System.Timers.Timer(1410);
+            ItemOnSaleTimer.Elapsed += GetNewDiscount;
+            ItemOnSaleTimer.AutoReset = true;
+            ItemOnSaleTimer.Enabled = true;
             Rand = new Random();
 
         }
