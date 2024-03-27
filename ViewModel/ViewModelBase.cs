@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Model;
 using System.Windows.Input;
 using System.Diagnostics;
+using ViewModel;
 
 namespace ViewModel
 {
@@ -38,7 +39,7 @@ namespace ViewModel
             CartButtonClick = new RelayCommand(CartButtonClickHandler);
             MainPageButtonClick = new RelayCommand(MainPageButtonClickHandler);
             BuyButtonClick = new RelayCommand(BuyButtonClickHandler);
-
+            AllItemsButtonClick = new RelayCommand(AllItemsButtonClickHandler);
             ItemButtonClick = new ParameterCommand<Guid>(ItemButtonClickHandler);
         }
 
@@ -70,17 +71,30 @@ namespace ViewModel
         public ICommand MainPageButtonClick { get; set; }
         public ICommand BuyButtonClick { get; set; }
 
+        public ICommand AllItemsButtonClick { get; set; }
+
 
         private void CartButtonClickHandler()
         {
             CartViewVisibility = "Visible";
             MainViewVisibility = "Hidden";
+
         }
         private void MainPageButtonClickHandler()
         {
             Debug.WriteLine("MainPageButtonClickHandler");
             CartViewVisibility = "Hidden";
             MainViewVisibility = "Visible";
+
+        }
+
+        private void AllItemsButtonClickHandler()
+        {
+            items.Clear();
+            foreach (ItemPresentation item in this.model.StoragePresentation.GetItems())
+            {
+                items.Add(item);
+            }
         }
 
         private void AppleButtonClickHandler()
@@ -158,9 +172,9 @@ namespace ViewModel
             CartValue = shoppingCart.Sum();
 
             Items.Clear();
-            foreach (ItemPresentation weapon in model.StoragePresentation.GetItems())
+            foreach (ItemPresentation item in model.StoragePresentation.GetItems())
             {
-                Items.Add(weapon);
+                Items.Add(item);
             }
         }
 
@@ -228,19 +242,6 @@ namespace ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #region API
 
-        /// <summary>
-        /// Raises the PropertyChanged event if needed.
-        /// </summary>
-        /// <param name="propertyName">(optional) The name of the property that changed.
-        /// The <see cref="CallerMemberName"/> allows you to obtain the method or property name of the caller to the method.
-        /// </param>
-        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion API
     }
 }

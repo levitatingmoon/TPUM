@@ -38,10 +38,13 @@ namespace Logic
 
         private void GetNewDiscount(Object source, ElapsedEventArgs e)
         {
-            DiscountValue = ((float)Rand.NextDouble() * 0.5f) + 0.7f;
-            IItem item = Storage.ItemList[Rand.Next(0, Storage.ItemList.Count)];
-            ItemOnSaleId = item.id;
-            Storage.ChangePrice(ItemOnSaleId, item.price * DiscountValue);
+            if (Storage.ItemList.Count >= 1)
+            {
+                DiscountValue = ((float)Rand.NextDouble() * 0.5f) + 0.7f;
+                IItem item = Storage.ItemList[Rand.Next(0, Storage.ItemList.Count)];
+                ItemOnSaleId = item.id;
+                Storage.ChangePrice(ItemOnSaleId, item.price * DiscountValue);
+            }
         }
     }
 }
