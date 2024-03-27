@@ -19,7 +19,6 @@ namespace ViewModel
         private ShoppingCart shoppingCart;
         private ObservableCollection<ItemPresentation> items;
         private Timer timer;
-        private ModelAbstractApi ModelLayer;
         private string mainViewVisibility;
 
         #endregion private
