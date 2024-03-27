@@ -11,6 +11,7 @@ namespace Data
     {
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
 
+        private object lockObject = new object();
         public List<IItem> ItemList { get; }
 
         public Storage()
@@ -29,36 +30,59 @@ namespace Data
 
         public void AddItem(IItem item)
         {
-            ItemList.Add(item);
+            lock (lockObject)
+            {
+                ItemList.Add(item);
+            }
         }
 
         public void AddItems(List<IItem> items)
         {
-            ItemList.AddRange(items);
+            lock (lockObject)
+            {
+                ItemList.AddRange(items);
+            }
         }
 
         public void RemoveItems(List<IItem> items)
         {
-            items.ForEach(item => ItemList.Remove(item));
+            lock (lockObject)
+            {
+                items.ForEach(item => ItemList.Remove(item));
+            }
         }
 
         public List<IItem> GetItemsOfType(ItemType type)
         {
-            return ItemList.FindAll(item => item.type == type);
+            List<IItem> items = new List<IItem>();
+            lock (lockObject)
+            {
+                foreach (IItem item in ItemList)
+                {
+                    if (item.type == type)
+                    {
+                        items.Add(item);
+                    }
+                }
+            }
+            return items;
         }
 
         public void ChangePrice(Guid id, float newPrice)
         {
             IItem item = ItemList.Find(x => x.id.Equals(id));
+            lock (lockObject)
+            {
 
-            if (item == null)
-                return;
+                if (item == null)
+                    return;
 
-            if (Math.Abs(newPrice - item.price) < 0.01f)
-                return;
+                if (Math.Abs(newPrice - item.price) < 0.01f)
+                    return;
 
-            item.price = newPrice;
-            OnPriceChanged(item.id, item.price);
+                item.price = newPrice;
+                OnPriceChanged(item.id, item.price);
+            }
         }
 
         private void OnPriceChanged(Guid id, float price)
@@ -70,15 +94,20 @@ namespace Data
         public List<IItem> GetItemsByID(List<Guid> Ids)
         {
             List<IItem> items = new List<IItem>();
-            foreach (Guid guid in Ids)
-            {
-                List<IItem> tmp = ItemList.FindAll(x => x.id == guid);
 
-                if (tmp.Count > 0)
-                    items.AddRange(tmp);
+            lock (lockObject)
+            {
+                foreach (Guid guid in Ids)
+                {
+                    List<IItem> tmp = ItemList.FindAll(x => x.id == guid);
+
+                    if (tmp.Count > 0)
+                        items.AddRange(tmp);
+                }
             }
 
             return items;
         }
+
     }
 }

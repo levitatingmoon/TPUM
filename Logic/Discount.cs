@@ -14,10 +14,11 @@ namespace Logic
         private Guid ItemOnSaleId { get; set; }
         private float DiscountValue { get; set; }
 
-        private bool isDiscount = false;
-
         private IStorage Storage { get; set; }
         private Random Rand { get; set; }
+
+        private bool canDiscount;
+        private object objectLock = new object();
 
 
         public Discount(IStorage storage)
@@ -25,7 +26,12 @@ namespace Logic
             Storage = storage;
             Rand = new Random();
             GetNewDiscount();
+            canDiscount = true;
+        }
 
+        ~Discount()
+        {
+            canDiscount = false;
         }
 
         public Tuple<Guid, float> GetDiscount()
@@ -40,27 +46,26 @@ namespace Logic
                 IItem item;
                 float waitSeconds = 7f;
                 await Task.Delay((int)Math.Truncate(waitSeconds * 1000f));
-                if (isDiscount) 
-                {
 
-                    if(Storage.ItemList.Count > 0) 
+                lock (objectLock)
+                {
+                    if (Storage.ItemList.Count > 0)
                     {
-                        List<Guid> list = new List<Guid>();
-                        list.Add(ItemOnSaleId);
-                        item = Storage.GetItemsByID(list)[0];
-                        item.price = item.price / DiscountValue;
-                        isDiscount = false;
+                        DiscountValue = ((float)Rand.NextDouble() * 0.7f) + 0.5f;
+                        item = Storage.ItemList[Rand.Next(0, Storage.ItemList.Count)];
+                        ItemOnSaleId = item.id;
+                        Storage.ChangePrice(ItemOnSaleId, item.price * DiscountValue);
                     }
+                }
 
-                }
-                if (Storage.ItemList.Count > 0)
+                lock (objectLock)
                 {
-                    DiscountValue = ((float)Rand.NextDouble() * 0.5f) + 0.7f;
-                    item = Storage.ItemList[Rand.Next(0, Storage.ItemList.Count)];
-                    ItemOnSaleId = item.id;
-                    Storage.ChangePrice(ItemOnSaleId, item.price * DiscountValue);
-                    isDiscount = true;
+                    if (!canDiscount)
+                    {
+                        break;
+                    }
                 }
+
             }
         }
     }

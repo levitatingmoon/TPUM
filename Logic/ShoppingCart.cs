@@ -11,6 +11,7 @@ namespace Logic
         private List<ShopItem> items;
         public float shoppingCartValue { get; private set; }
 
+        
         public ShoppingCart()
         {
             items = new List<ShopItem>();

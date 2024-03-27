@@ -13,6 +13,7 @@ namespace Logic
         private Discount discount;
 
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
+        private object objectLock = new object();
 
         public Shop(IStorage storage)
         {
@@ -22,20 +23,20 @@ namespace Logic
 
         }
 
-        public List<ShopItem> GetItems(bool onSale = true)
+        public List<ShopItem> GetItems(bool isDiscounted = true)
         {
-            Tuple<Guid, float> sale = new Tuple<Guid, float>(Guid.Empty, 1f);
+            Tuple<Guid, float> discount = new Tuple<Guid, float>(Guid.Empty, 1f);
             
-            if (onSale)
-                sale = discount.GetDiscount();
+            if (isDiscounted)
+                discount = this.discount.GetDiscount();
 
             List<ShopItem> availableItems = new List<ShopItem>();
 
             foreach (IItem item in Storage.ItemList)
             {
                 float price = item.price;
-                if (item.id.Equals(sale.Item1))
-                    price *= sale.Item2;
+                if (item.id.Equals(discount.Item1))
+                    price *= discount.Item2;
 
                 availableItems.Add(new ShopItem
                 {
@@ -51,15 +52,18 @@ namespace Logic
 
         public bool Sell(List<ShopItem> items)
         {
-            List<Guid> itemIDs = new List<Guid>();
+            lock (objectLock)
+            {
+                List<Guid> itemIDs = new List<Guid>();
 
-            foreach (ShopItem item in items)
-                itemIDs.Add(item.Id);
+                foreach (ShopItem item in items)
+                    itemIDs.Add(item.Id);
 
-            List<IItem> itemsDataLayer = Storage.GetItemsByID(itemIDs);
+                List<IItem> itemsDataLayer = Storage.GetItemsByID(itemIDs);
 
-            Storage.RemoveItems(itemsDataLayer);
+                Storage.RemoveItems(itemsDataLayer);
 
+            }
             return true;
         }
 
