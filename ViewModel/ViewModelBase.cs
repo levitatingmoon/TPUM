@@ -83,7 +83,6 @@ namespace ViewModel
         }
         private void MainPageButtonClickHandler()
         {
-            Debug.WriteLine("MainPageButtonClickHandler");
             CartViewVisibility = "Hidden";
             MainViewVisibility = "Visible";
 
