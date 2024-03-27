@@ -16,11 +16,6 @@ namespace Model
             Shop = shop;
             //Shop.PriceChanged += OnPriceChanged;
         }
-        private void OnPriceChanged(object sender, Logic.PriceChangedEventArgs e)
-        {
-            EventHandler<PriceChangedEventArgs> handler = PriceChanged;
-            handler?.Invoke(this, new PriceChangedEventArgs(e.Id, e.Price));
-        }
 
         public List<ItemPresentation> GetItems()
         {
@@ -32,7 +27,6 @@ namespace Model
             return items;
         }
 
-        public event EventHandler<PriceChangedEventArgs> PriceChanged;
     }
 }
 

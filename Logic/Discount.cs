@@ -11,23 +11,20 @@ namespace Logic
 {
     internal class Discount : IDiscount
     {
+        private Guid ItemOnSaleId { get; set; }
         private float DiscountValue { get; set; }
 
-        private IStorage Storage { get; set; }
+        private bool isDiscount = false;
 
-        private Guid ItemOnSaleId { get; set; }
-        private System.Timers.Timer ItemOnSaleTimer { get; }
+        private IStorage Storage { get; set; }
         private Random Rand { get; set; }
 
 
         public Discount(IStorage storage)
         {
             Storage = storage;
-            ItemOnSaleTimer = new System.Timers.Timer(1410);
-            ItemOnSaleTimer.Elapsed += GetNewDiscount;
-            ItemOnSaleTimer.AutoReset = true;
-            ItemOnSaleTimer.Enabled = true;
             Rand = new Random();
+            GetNewDiscount();
 
         }
 
@@ -36,14 +33,34 @@ namespace Logic
             return new Tuple<Guid, float>(ItemOnSaleId, DiscountValue);
         }
 
-        private void GetNewDiscount(Object source, ElapsedEventArgs e)
+        private async void GetNewDiscount()
         {
-            if (Storage.ItemList.Count >= 1)
+            while (true)
             {
-                DiscountValue = ((float)Rand.NextDouble() * 0.5f) + 0.7f;
-                IItem item = Storage.ItemList[Rand.Next(0, Storage.ItemList.Count)];
-                ItemOnSaleId = item.id;
-                Storage.ChangePrice(ItemOnSaleId, item.price * DiscountValue);
+                IItem item;
+                float waitSeconds = 7f;
+                await Task.Delay((int)Math.Truncate(waitSeconds * 1000f));
+                if (isDiscount) 
+                {
+
+                    if(Storage.ItemList.Count > 0) 
+                    {
+                        List<Guid> list = new List<Guid>();
+                        list.Add(ItemOnSaleId);
+                        item = Storage.GetItemsByID(list)[0];
+                        item.price = item.price / DiscountValue;
+                        isDiscount = false;
+                    }
+
+                }
+                if (Storage.ItemList.Count > 0)
+                {
+                    DiscountValue = ((float)Rand.NextDouble() * 0.5f) + 0.7f;
+                    item = Storage.ItemList[Rand.Next(0, Storage.ItemList.Count)];
+                    ItemOnSaleId = item.id;
+                    Storage.ChangePrice(ItemOnSaleId, item.price * DiscountValue);
+                    isDiscount = true;
+                }
             }
         }
     }

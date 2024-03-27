@@ -16,15 +16,21 @@ namespace Model
         public string CartViewVisibility;
         public ShoppingCart ShoppingCart;
 
+        public event EventHandler<PriceChangedEventArgs>? PriceChanged;
         public StoragePresentation StoragePresentation { get; private set; }
         public Model(LogicAbstractApi? iLogicLayer)
         {
             this.iLogicLayer = iLogicLayer == null ? LogicAbstractApi.Create() : iLogicLayer;
             StoragePresentation = new StoragePresentation(this.iLogicLayer.Shop);
             ShoppingCart = new ShoppingCart(new ObservableCollection<ItemPresentation>(), this.iLogicLayer.Shop);
-            Debug.WriteLine("Here");
             MainViewVisibility = "Visiblie";
             CartViewVisibility = "Hidden";
+            this.iLogicLayer.Shop.PriceChanged += OnPriceChanged;
+        }
+
+        public void OnPriceChanged(object sender, Logic.PriceChangedEventArgs e)
+        {
+            PriceChanged?.Invoke(this, new PriceChangedEventArgs(e.Id, e.Price));
         }
 
     }

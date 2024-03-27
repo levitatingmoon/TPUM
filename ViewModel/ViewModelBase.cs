@@ -15,13 +15,14 @@ namespace ViewModel
         private ObservableCollection<ItemPresentation> items;
         private string mainViewVisibility;
         private string cartViewVisibility;
-        private StoragePresentation storagePresentation;
+        //private StoragePresentation storagePresentation;
         private ShoppingCart shoppingCart;
         private float cartValue;
 
         public ViewModelBase()
         {
             this.model = new Model.Model(null);
+            this.model.PriceChanged += HandlePriceChanged;
             this.items = new ObservableCollection<ItemPresentation>();
             MainViewVisibility = this.model.MainViewVisibility;
             CartViewVisibility = this.model.CartViewVisibility;
@@ -235,8 +236,21 @@ namespace ViewModel
             }
         }
 
+        public void RefreshItems()
+        {
+            Items.Clear();
+            foreach (ItemPresentation item in model.StoragePresentation.GetItems())
+            {
+                Items.Add(item);
+            }
+        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public void HandlePriceChanged(object? sender, Model.PriceChangedEventArgs args)
+        {
+            RefreshItems();
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

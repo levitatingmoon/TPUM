@@ -51,7 +51,7 @@ namespace Data
         {
             IItem item = ItemList.Find(x => x.id.Equals(id));
 
-            if (item != null)
+            if (item == null)
                 return;
 
             if (Math.Abs(newPrice - item.price) < 0.01f)

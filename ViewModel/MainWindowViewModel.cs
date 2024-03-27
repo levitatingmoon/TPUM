@@ -9,7 +9,7 @@ using Model;
 
 namespace ViewModel
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel
     {
 
 
