@@ -23,7 +23,7 @@ namespace Model
             this.iLogicLayer = iLogicLayer == null ? LogicAbstractApi.Create() : iLogicLayer;
             StoragePresentation = new StoragePresentation(this.iLogicLayer.Shop);
             ShoppingCart = new ShoppingCart(new ObservableCollection<ItemPresentation>(), this.iLogicLayer.Shop);
-            MainViewVisibility = "Visiblie";
+            MainViewVisibility = "Visible";
             CartViewVisibility = "Hidden";
             this.iLogicLayer.Shop.PriceChanged += OnPriceChanged;
         }
