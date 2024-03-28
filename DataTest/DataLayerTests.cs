@@ -18,11 +18,11 @@ namespace DataTest
             inventory.ItemList.Clear();
             Assert.AreEqual(0, inventory.ItemList.Count);
 
-            List<IItem> items = new List<IItem> {
-
-                new Item("small carrot", 2.0f, ItemType.Carrot),
-                new Item("cucumber", 3.0f, ItemType.Cucumber),
-            };
+            List<IItem> items = new List<IItem>();
+            IItem item1 = IItem.Create("small carrot", 2.0f, ItemType.Carrot);
+            IItem item2 = IItem.Create("cucumber", 3.0f, ItemType.Cucumber);
+            items.Add(item1);
+            items.Add(item2);
 
             inventory.AddItems(items);
 
@@ -32,7 +32,7 @@ namespace DataTest
         public void AddItemTest()
         {
 
-            Item item = new Item("golden delicious", 5.0f, ItemType.Apple);
+            IItem item = IItem.Create("golden delicious", 5.0f, ItemType.Apple);
             inventory.AddItem(item);
             Assert.AreEqual(3, inventory.ItemList.Count);
         }
@@ -42,8 +42,8 @@ namespace DataTest
         {
 
             List<IItem> items = new List<IItem>();
-            items.Add(new Item("carrot", 4.0f, ItemType.Carrot));
-            items.Add(new Item("banana", 3.0f, ItemType.Banana));
+            items.Add(IItem.Create("carrot", 4.0f, ItemType.Carrot));
+            items.Add(IItem.Create("banana", 3.0f, ItemType.Banana));
             inventory.AddItems(items);
             Assert.AreEqual(4, inventory.ItemList.Count);
 

@@ -12,5 +12,10 @@ namespace Data
         float price { get; set; }
         Guid id { get; }
         ItemType type { get; }
+
+        public static IItem Create(string name, float price, ItemType type)
+        {
+            return new Item(name, price, type);
+        }
     }
 }

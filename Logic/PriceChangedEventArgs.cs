@@ -14,7 +14,7 @@ namespace Logic
         public PriceChangedEventArgs(Guid id, float price) {
 
             Id = id;
-            Price = price; 
+            Price = price;
         }
 
     }
