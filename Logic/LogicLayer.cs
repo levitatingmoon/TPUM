@@ -7,7 +7,7 @@ using Data;
 
 namespace Logic
 {
-    public class LogicLayer : LogicAbstractApi
+    internal class LogicLayer : LogicAbstractApi
     {
         private DataAbstractApi Datalayer { get; }
 

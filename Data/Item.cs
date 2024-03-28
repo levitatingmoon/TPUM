@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("DataTest")]
+
 namespace Data
 {
-    public class Item : IItem
+    internal class Item : IItem
     {
 
         public string name { get; set; }

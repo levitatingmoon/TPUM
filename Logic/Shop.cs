@@ -7,7 +7,7 @@ using Data;
 
 namespace Logic
 {
-    public class Shop : IShop
+    internal class Shop : IShop
     {
         private IStorage Storage;
         private Discount discount;
