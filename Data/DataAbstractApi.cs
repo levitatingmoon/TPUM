@@ -10,9 +10,9 @@ namespace Data
     {
         public abstract IStorage Storage { get; set; }
 
-        public static DataAbstractApi Create(IStorage storage = default)
+        public static DataAbstractApi Create()
         {
-            return new DataApi(storage);
+            return new DataApi();
         }
     }
 }

@@ -9,11 +9,11 @@ namespace LogicTest
 {
     internal class DataLayerTest : DataAbstractApi
     {
-        public override IStorage Storage { get; set; }
-
-        public DataLayerTest(IStorage storage)
+        private readonly IStorage storage = new StorageMock();
+        public override IStorage Storage
         {
-            Storage = storage ?? new StorageMock();
+            get { return storage; }
+            set { }
         }
     }
 
@@ -25,7 +25,11 @@ namespace LogicTest
 
         public StorageMock()
         {
-            ItemList = new List<IItem>();
+            ItemList = new List<IItem>
+            {
+                new ItemMock("Golden Delicious", 5.5f,ItemType.Apple),
+                new ItemMock("Premium Banana", 5.5f,ItemType.Banana),
+            };
         }
 
         public void AddItem(IItem item)
@@ -81,6 +85,24 @@ namespace LogicTest
 
             return items;
         }
+    }
+
+    public class ItemMock : IItem
+    {
+        public string name { get; set; }
+        public float price { get; set; }
+        public Guid id { get; set; }
+        public ItemType type { get; set; }
+
+        public ItemMock(string name, float price, ItemType type)
+        {
+            this.name = name;
+            this.price = price;
+            this.type = type;
+
+            this.id = Guid.NewGuid();
+        }
+
     }
 }
 
