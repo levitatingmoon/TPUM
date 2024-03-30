@@ -15,7 +15,6 @@ namespace ViewModel
         private ObservableCollection<ItemPresentation> items;
         private string mainViewVisibility;
         private string cartViewVisibility;
-        //private StoragePresentation storagePresentation;
         private ShoppingCart shoppingCart;
         private float cartValue;
 

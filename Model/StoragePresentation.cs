@@ -14,7 +14,6 @@ namespace Model
         public StoragePresentation(IShop shop)
         {
             Shop = shop;
-            //Shop.PriceChanged += OnPriceChanged;
         }
 
         public List<ItemPresentation> GetItems()
