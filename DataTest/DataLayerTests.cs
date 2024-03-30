@@ -72,5 +72,15 @@ namespace DataTest
             Assert.AreEqual(1, inventory.ItemList.Count);
         }
 
+        [TestMethod]
+        public void ChangeItemPriceTest()
+        {
+            IItem item = inventory.GetItemsOfType(ItemType.Cucumber)[0];
+            Assert.IsNotNull(item);
+            Assert.AreEqual(item.price, 3.0f);
+
+            inventory.ChangePrice(item.id, 5.0f);
+            Assert.AreEqual(item.price, 5.0f);
+        }
     }
 }
