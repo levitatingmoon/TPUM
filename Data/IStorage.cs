@@ -9,6 +9,9 @@ namespace Data
     public interface IStorage
     {
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
+        public event EventHandler TransactionFailed;
+        public event EventHandler<List<IItem>> TransactionSucceeded;
+
 
         public List<IItem> ItemList { get; }
         public void AddItem(IItem item);
