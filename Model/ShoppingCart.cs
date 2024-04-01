@@ -35,23 +35,18 @@ namespace Model
             return res;
         }
 
-        public bool Buy()
+        public async Task Buy()
         {
             List<ShopItem> shoppingList = new List<ShopItem>();
-
 
             foreach (ItemPresentation itemPresentation in Items)
             {
                 shoppingList.Add(Shop.GetItems().FirstOrDefault(x => x.Id == itemPresentation.Id));
             }
 
-            bool res = Shop.Sell(shoppingList);
-            if (res)
-            {
-                Items.Clear();
-            }
+            Task.Run(async () => await Shop.Sell(shoppingList));
 
-            return res;
+            Items.Clear();
         }
     }
 }

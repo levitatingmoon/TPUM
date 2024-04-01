@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public interface IStorage
+    public interface IStorage : IObservable<IItem>
     {
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
         public event EventHandler TransactionFailed;
@@ -23,5 +23,8 @@ namespace Data
 
         public List<IItem> GetItemsByID(List<Guid> Ids);
 
+        public Task SendAsync(string mesg);
+        public Task RequestItemsUpdate();
+        Task TryBuying(List<IItem> items);
     }
 }

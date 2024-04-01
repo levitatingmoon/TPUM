@@ -10,9 +10,17 @@ namespace Logic
     public interface IShop
     {
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
+       
+        public event EventHandler<ShopItem> OnItemChanged;
+        public event EventHandler<ShopItem> OnItemRemoved;
+        public event EventHandler TransactionFailed;
+        public event EventHandler<List<ShopItem>> TransactionSucceeded;
+
 
         List<ShopItem> GetItems(bool onSale = true);
-        bool Sell(List<ShopItem> items);
+        public Task Sell(List<ShopItem> items);
+
+        public Task SendMessageAsync(string message);
 
     }
 }

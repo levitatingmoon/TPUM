@@ -184,7 +184,7 @@ namespace Data
 
         private async void Connected()
         {
-           // WebSocketClient.CurrentConnection.OnMessage = ParseMessage;
+            WebSocketClient.CurrentConnection.onMessage = ParseMessage;
             await RequestItemsUpdate();
         }
 
@@ -198,7 +198,7 @@ namespace Data
         public async Task TryBuying(List<IItem> items)
         {
             waitingForSellResponse = true;
-            string json = Serializer.StorageToJSON(items);
+            string json = Serializer.StorageToJSON(items);         
             await WebSocketClient.CurrentConnection.SendAsync("RequestTransaction" + json);
         }
 
