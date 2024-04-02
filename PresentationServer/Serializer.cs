@@ -10,9 +10,9 @@ namespace PresentationServer
 {
     public abstract class Serializer
     {
-        public static string ItemToJSON(IShopItem weapon)
+        public static string ItemToJSON(IShopItem item)
         {
-            return JsonSerializer.Serialize(weapon);
+            return JsonSerializer.Serialize(item);
         }
 
         public static IShopItem JSONToItem(string json)

@@ -45,29 +45,7 @@ namespace ViewModel
             ConnectButtonClick = new RelayCommand(() => ConnectButtonClickHandler());
         }
 
-        private async Task ConnectButtonClickHandler()
-        {
-            if (!model.StoragePresentation.IsConnected())
-            {
-                ConnectButtonText = "Connecting...";
-                bool result = await model.StoragePresentation.Connect(new Uri("ws://localhost:8081"));
-
-                if (result)
-                {
-                    ConnectButtonText = "Connected!";
-                    Items.Clear();
-                    foreach (ItemPresentation weapon in model.StoragePresentation.GetItems())
-                        Items.Add(weapon);
-                }
-            }
-            else
-            {
-                await model.StoragePresentation.Disconnect();
-                ConnectButtonText = "Disconnected!";
-                Items.Clear();
-            }
-        }
-
+      
         public ObservableCollection<ItemPresentation> Items
         {
             get
@@ -99,6 +77,31 @@ namespace ViewModel
         public ICommand AllItemsButtonClick { get; set; }
 
         public ICommand ConnectButtonClick { get; set; }
+
+        private async Task ConnectButtonClickHandler()
+        {
+            if (!model.StoragePresentation.IsConnected())
+            {
+                ConnectButtonText = "Connecting...";
+                bool result = await model.StoragePresentation.Connect(new Uri("ws://localhost:8081"));
+
+                if (result)
+                {
+                    ConnectButtonText = "Connected!";
+                    Items.Clear();
+                    foreach (ItemPresentation item in model.StoragePresentation.GetItems())
+                        Items.Add(item);
+                }
+            }
+            else
+            {
+                await model.StoragePresentation.Disconnect();
+                ConnectButtonText = "Disconnected!";
+                Items.Clear();
+            }
+        }
+
+
 
         private void CartButtonClickHandler()
         {

@@ -26,7 +26,7 @@ namespace Data
 
         public static List<IItem> JSONToStorage(string json)
         {
-            return new List<IItem>(JsonSerializer.Deserialize<List<IItem>>(json)!);
+            return new List<IItem>(JsonSerializer.Deserialize<List<Item>>(json)!);
         }
     }
 }
