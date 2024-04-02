@@ -23,6 +23,11 @@ namespace LogicTest
         public event EventHandler TransactionFailed;
         public event EventHandler<List<IItem>> TransactionSucceeded;
 
+        private bool waitingForStorageUpdate;
+        private bool waitingForSellResponse;
+        private bool transactionSuccess;
+        private List<IObserver<IItem>> observers;
+
         public List<IItem> ItemList { get; }
 
         public StorageMock()
@@ -87,9 +92,32 @@ namespace LogicTest
 
             return items;
         }
+
+
+        public async Task SendAsync(string mesg)
+        {
+
+        }
+
+        public async Task RequestItemsUpdate()
+        {
+
+        }
+
+        public IDisposable Subscribe(IObserver<IItem> observer)
+        {
+            return null;
+        }
+
+        public async Task TryBuying(List<IItem> items)
+        {
+            RemoveItems(items);
+        }
+
     }
 
-    public class ItemMock : IItem
+
+    internal class ItemMock : IItem
     {
         public string name { get; set; }
         public float price { get; set; }
