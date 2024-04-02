@@ -150,9 +150,8 @@ namespace Data
             if (message.Contains("UpdateAll"))
             {
                 string json = message.Substring("UpdateAll".Length);
-                List<IItem> items = Serializer.JSONToStorage(json);
-                foreach (var item in items)
-                    AddItem(item);
+                List<IItem> items = Serializer.JSONToStorage(json);          
+                AddItems(items);
                 waitingForStorageUpdate = false;
             }
             else if (message.Contains("TransactionResult"))

@@ -32,6 +32,9 @@ namespace ViewModel
                 items.Add(item);
             }
 
+            model.StoragePresentation.ItemChanged += OnItemChanged;
+            model.StoragePresentation.ItemRemoved += OnItemRemoved;
+
             AppleButtonClick = new RelayCommand(AppleButtonClickHandler);
             CarrotButtonClick = new RelayCommand(CarrotButtonClickHandler);
             PearButtonClick = new RelayCommand(PearButtonClickHandler);
@@ -102,6 +105,44 @@ namespace ViewModel
         }
 
 
+        private void OnItemChanged(object? sender, ItemPresentation e)
+        {
+            ObservableCollection<ItemPresentation> newItems = new ObservableCollection<ItemPresentation>(Items);
+            ItemPresentation item = newItems.FirstOrDefault(x => x.Id == e.Id);
+
+            if (item != null)
+            {
+                int itemIndex = newItems.IndexOf(item);
+
+                if (e.Type.ToLower() == "deleted")
+                    newItems.RemoveAt(itemIndex);
+                else
+                {
+                    newItems[itemIndex].Name = e.Name;
+                    newItems[itemIndex].Price = e.Price;
+                    newItems[itemIndex].Id = e.Id;
+                    newItems[itemIndex].Type = e.Type;
+                }
+            }
+            else
+                newItems.Add(e);
+
+            Items = new ObservableCollection<ItemPresentation>(newItems);
+        }
+
+        private void OnItemRemoved(object? sender, ItemPresentation e)
+        {
+            ObservableCollection<ItemPresentation> newItems = new ObservableCollection<ItemPresentation>(Items);
+            ItemPresentation Item = newItems.FirstOrDefault(x => x.Id == e.Id);
+
+            if (Item != null)
+            {
+                int itemIndex = newItems.IndexOf(Item);
+                newItems.RemoveAt(itemIndex);
+            }
+
+            Items = new ObservableCollection<ItemPresentation>(newItems);
+        }
 
         private void CartButtonClickHandler()
         {
