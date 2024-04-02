@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LogicServer
 {
-    internal class IDiscount
+    public interface IDiscount
     {
+        Tuple<Guid, float> GetDiscount();
     }
 }

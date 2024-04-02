@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace LogicServer
 {
-    internal class PriceChangedEventArgs
+    public class PriceChangedEventArgs : EventArgs
     {
+        public Guid Id { get; }
+        public float Price { get; }
+
+        public PriceChangedEventArgs(Guid id, float price)
+        {
+
+            Id = id;
+            Price = price;
+        }
+
     }
 }

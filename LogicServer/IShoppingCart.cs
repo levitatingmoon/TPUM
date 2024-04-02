@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogicServer
 {
-    internal class IShoppingCart
+    public interface IShoppingCart
     {
+        void AddItem(ShopItem item);
+        void RemoveItem(ShopItem item);
     }
 }
