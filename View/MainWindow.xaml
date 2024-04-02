@@ -16,6 +16,17 @@
             <Button Background="DarkOliveGreen" Content="Cart" MinHeight="50" MinWidth="100" Command= "{Binding CartButtonClick}" 
                     HorizontalAlignment="Left" Canvas.Left="690" Canvas.Top="5" VerticalAlignment="Center" Width="84"/>
 
+            <Button Content="{Binding ConnectButtonText}" MinHeight="50" MinWidth="100" Command= "{Binding ConnectButtonClick}" 
+                    HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="424" VerticalAlignment="Center" Width="150" Background="DarkOliveGreen">
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Button.RenderTransform>
+            </Button>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="434" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" Width="200" Height="435">
                     <Button Background="OliveDrab" Content="All Items" MinHeight="50" MinWidth="100" Margin="5 5" Command= "{Binding AllItemsButtonClick}"/>

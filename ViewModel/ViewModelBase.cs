@@ -17,6 +17,7 @@ namespace ViewModel
         private string cartViewVisibility;
         private ShoppingCart shoppingCart;
         private float cartValue;
+        private string connectButtonText;
 
         public ViewModelBase()
         {
@@ -41,6 +42,30 @@ namespace ViewModel
             BuyButtonClick = new RelayCommand(BuyButtonClickHandler);
             AllItemsButtonClick = new RelayCommand(AllItemsButtonClickHandler);
             ItemButtonClick = new ParameterCommand<Guid>(ItemButtonClickHandler);
+            ConnectButtonClick = new RelayCommand(() => ConnectButtonClickHandler());
+        }
+
+        private async Task ConnectButtonClickHandler()
+        {
+            if (!model.StoragePresentation.IsConnected())
+            {
+                ConnectButtonText = "Connecting...";
+                bool result = await model.StoragePresentation.Connect(new Uri("ws://localhost:8081"));
+
+                if (result)
+                {
+                    ConnectButtonText = "Connected!";
+                    Items.Clear();
+                    foreach (ItemPresentation weapon in model.StoragePresentation.GetItems())
+                        Items.Add(weapon);
+                }
+            }
+            else
+            {
+                await model.StoragePresentation.Disconnect();
+                ConnectButtonText = "Disconnected!";
+                Items.Clear();
+            }
         }
 
         public ObservableCollection<ItemPresentation> Items
@@ -73,6 +98,7 @@ namespace ViewModel
 
         public ICommand AllItemsButtonClick { get; set; }
 
+        public ICommand ConnectButtonClick { get; set; }
 
         private void CartButtonClickHandler()
         {
@@ -231,6 +257,18 @@ namespace ViewModel
                     return;
                 cartValue = value;
                 OnPropertyChanged("CartValue");
+            }
+        }
+
+        public string ConnectButtonText
+        {
+            get { return connectButtonText; }
+            set
+            {
+                if (value.Equals(connectButtonText))
+                    return;
+                connectButtonText = value;
+                OnPropertyChanged("ConnectButtonText");
             }
         }
 

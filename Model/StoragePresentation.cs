@@ -42,7 +42,7 @@ namespace Model
 
         public async Task SendMessageAsync(string mesg)
         {
-            Shop.SendMessageAsync(mesg);
+            await Shop.SendMessageAsync(mesg);
         }
 
         public Task<bool> Connect(Uri uri)

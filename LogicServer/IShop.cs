@@ -11,8 +11,8 @@ namespace LogicServer
     {
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
 
-        List<ShopItem> GetItems(bool onSale = true);
-        bool Sell(List<ShopItem> items);
+        List<IShopItem> GetItems(bool onSale = true);
+        bool Sell(List<IShopItem> items);
 
     }
 }

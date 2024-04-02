@@ -44,7 +44,9 @@ namespace Model
                 shoppingList.Add(Shop.GetItems().FirstOrDefault(x => x.Id == itemPresentation.Id));
             }
 
-            Task.Run(async () => await Shop.Sell(shoppingList));
+            //Task.Run(async () => await Shop.Sell(shoppingList));
+
+            await Shop.Sell(shoppingList);
 
             Items.Clear();
         }

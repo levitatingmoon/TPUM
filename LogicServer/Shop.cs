@@ -23,14 +23,14 @@ namespace LogicServer
 
         }
 
-        public List<ShopItem> GetItems(bool isDiscounted = true)
+        public List<IShopItem> GetItems(bool isDiscounted = true)
         {
             Tuple<Guid, float> discount = new Tuple<Guid, float>(Guid.Empty, 1f);
 
             if (isDiscounted)
                 discount = this.discount.GetDiscount();
 
-            List<ShopItem> availableItems = new List<ShopItem>();
+            List<IShopItem> availableItems = new List<IShopItem>();
 
             foreach (IItem item in Storage.ItemList)
             {
@@ -50,13 +50,13 @@ namespace LogicServer
             return availableItems;
         }
 
-        public bool Sell(List<ShopItem> items)
+        public bool Sell(List<IShopItem> items)
         {
             lock (objectLock)
             {
                 List<Guid> itemIDs = new List<Guid>();
 
-                foreach (ShopItem item in items)
+                foreach (IShopItem item in items)
                     itemIDs.Add(item.Id);
 
                 List<IItem> itemsDataLayer = Storage.GetItemsByID(itemIDs);
