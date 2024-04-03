@@ -17,10 +17,10 @@
                     HorizontalAlignment="Left" Canvas.Left="690" Canvas.Top="5" VerticalAlignment="Center" Width="84"/>
 
             <Button Content="{Binding ConnectButtonText}" MinHeight="50" MinWidth="100" Command= "{Binding ConnectButtonClick}" 
-                    HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="424" VerticalAlignment="Center" Width="150" Background="DarkOliveGreen">
+                    HorizontalAlignment="Left" Canvas.Left="690" Canvas.Top="75" VerticalAlignment="Center" Width="84" Background="DarkOliveGreen">
                 <Button.RenderTransform>
                     <TransformGroup>
-                        <ScaleTransform ScaleY="-1"/>
+                        <ScaleTransform ScaleY="1"/>
                         <SkewTransform/>
                         <RotateTransform/>
                         <TranslateTransform/>
