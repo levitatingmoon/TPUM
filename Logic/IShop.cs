@@ -11,14 +11,14 @@ namespace Logic
     {
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
        
-        public event EventHandler<ShopItem> OnItemChanged;
-        public event EventHandler<ShopItem> OnItemRemoved;
+        public event EventHandler<IShopItem> OnItemChanged;
+        public event EventHandler<IShopItem> OnItemRemoved;
         public event EventHandler TransactionFailed;
-        public event EventHandler<List<ShopItem>> TransactionSucceeded;
+        public event EventHandler<List<IShopItem>> TransactionSucceeded;
 
 
-        List<ShopItem> GetItems(bool onSale = true);
-        public Task Sell(List<ShopItem> items);
+        List<IShopItem> GetItems(bool onSale = true);
+        public Task Sell(List<IShopItem> items);
 
         public Task SendMessageAsync(string message);
 

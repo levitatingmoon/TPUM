@@ -37,7 +37,7 @@ namespace Model
 
         public async Task Buy()
         {
-            List<ShopItem> shoppingList = new List<ShopItem>();
+            List<IShopItem> shoppingList = new List<IShopItem>();
 
             foreach (ItemPresentation itemPresentation in Items)
             {

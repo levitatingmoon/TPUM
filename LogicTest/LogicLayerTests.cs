@@ -19,8 +19,8 @@ namespace LogicTest
         [TestMethod]
         public void SellItemsTest() {
 
-            ShopItem item = logicApi.Shop.GetItems()[0];
-            List<ShopItem> shopItems = new List<ShopItem>();
+            IShopItem item = logicApi.Shop.GetItems()[0];
+            List<IShopItem> shopItems = new List<IShopItem>();
             shopItems.Add(item);
             int count = logicApi.Shop.GetItems().Count;
             logicApi.Shop.Sell(shopItems);

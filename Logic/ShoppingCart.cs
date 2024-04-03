@@ -8,22 +8,22 @@ namespace Logic
 {
     internal class ShoppingCart : IShoppingCart
     {
-        private List<ShopItem> items;
+        private List<IShopItem> items;
         public float shoppingCartValue { get; private set; }
 
         
         public ShoppingCart()
         {
-            items = new List<ShopItem>();
+            items = new List<IShopItem>();
             shoppingCartValue = 0;
         }
 
-        public void AddItem(ShopItem item)
+        public void AddItem(IShopItem item)
         {
             items.Add(item);
             shoppingCartValue += item.Price;
         }
-        public void RemoveItem(ShopItem item)
+        public void RemoveItem(IShopItem item)
         {
             items.Remove(item);
             shoppingCartValue -= item.Price;

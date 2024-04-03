@@ -33,7 +33,7 @@ namespace Model
         public List<ItemPresentation> GetItems()
         {
             List<ItemPresentation> items = new List<ItemPresentation>();
-            foreach (ShopItem item in Shop.GetItems())
+            foreach (IShopItem item in Shop.GetItems())
             {
                 items.Add(new ItemPresentation(item.Name, item.Price, item.Id, item.Type));
             }
@@ -66,18 +66,18 @@ namespace Model
             Console.WriteLine(mesg);
         }
 
-        private void OnItemRemoved(object? sender, ShopItem e)
+        private void OnItemRemoved(object? sender, IShopItem e)
         {
             EventHandler<ItemPresentation> handler = ItemRemoved;
             ItemPresentation Item = new ItemPresentation(e.Name, e.Price, e.Id, e.Type);
             handler?.Invoke(this, Item);
         }
 
-        private void OnTransactionSucceeded(object? sender, List<ShopItem> e)
+        private void OnTransactionSucceeded(object? sender, List<IShopItem> e)
         {
             EventHandler<List<ItemPresentation>> handler = TransactionSucceeded;
             List<ItemPresentation> soldItemPresentations = new List<ItemPresentation>();
-            foreach (ShopItem shopItem in e)
+            foreach (IShopItem shopItem in e)
             {
                 ItemPresentation ItemPresentation = new ItemPresentation(shopItem.Name, shopItem.Price, shopItem.Id,
                      shopItem.Type);
@@ -93,7 +93,7 @@ namespace Model
             handler?.Invoke(this, e);
         }
 
-        private void OnItemChanged(object? sender, ShopItem e)
+        private void OnItemChanged(object? sender, IShopItem e)
         {
             EventHandler<ItemPresentation> handler = ItemChanged;
             ItemPresentation item = new ItemPresentation(e.Name, e.Price, e.Id, e.Type);

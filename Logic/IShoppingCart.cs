@@ -8,7 +8,7 @@ namespace Logic
 {
     public interface IShoppingCart
     {
-        void AddItem(ShopItem item);
-        void RemoveItem(ShopItem item);
+        void AddItem(IShopItem item);
+        void RemoveItem(IShopItem item);
     }
 }

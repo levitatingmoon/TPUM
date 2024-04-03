@@ -15,10 +15,10 @@ namespace Logic
 
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
 
-        public event EventHandler<ShopItem> OnItemChanged;
-        public event EventHandler<ShopItem> OnItemRemoved;
+        public event EventHandler<IShopItem> OnItemChanged;
+        public event EventHandler<IShopItem> OnItemRemoved;
         public event EventHandler TransactionFailed;
-        public event EventHandler<List<ShopItem>> TransactionSucceeded;
+        public event EventHandler<List<IShopItem>> TransactionSucceeded;
 
 
         public Shop(IStorage storage)
@@ -34,8 +34,8 @@ namespace Logic
         private void OnTransactionSucceeded(object? sender, List<IItem> e)
         {
             this.Storage.RemoveItems(e);
-            EventHandler<List<ShopItem>> handler = TransactionSucceeded;
-            List<ShopItem> soldItems = new List<ShopItem>();
+            EventHandler<List<IShopItem>> handler = TransactionSucceeded;
+            List<IShopItem> soldItems = new List<IShopItem>();
 
             foreach (IItem item in e)
             {
@@ -58,14 +58,14 @@ namespace Logic
         }
 
 
-        public List<ShopItem> GetItems(bool isDiscounted = true)
+        public List<IShopItem> GetItems(bool isDiscounted = true)
         {
             Tuple<Guid, float> discount = new Tuple<Guid, float>(Guid.Empty, 1f);
             
             if (isDiscounted)
                 discount = this.discount.GetDiscount();
 
-            List<ShopItem> availableItems = new List<ShopItem>();
+            List<IShopItem> availableItems = new List<IShopItem>();
 
             foreach (IItem item in Storage.ItemList)
             {
@@ -85,17 +85,17 @@ namespace Logic
             return availableItems;
         }
 
-        public async Task Sell(List<ShopItem> items)
+        public async Task Sell(List<IShopItem> items)
         {          
            List<Guid> itemIDs = new List<Guid>();
 
-           foreach (ShopItem item in items)
+           foreach (IShopItem item in items)
                itemIDs.Add(item.Id);
 
             List<IItem> itemsDataLayer = Storage.GetItemsByID(itemIDs);
 
 
-           foreach (ShopItem item in items)
+           foreach (IShopItem item in items)
             {
                 IItem itemTemp = itemsDataLayer.Find(x => x.id == item.Id);
 
