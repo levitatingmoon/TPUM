@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Model;
@@ -119,7 +119,7 @@ namespace ViewModel
             {
                 int itemIndex = newItems.IndexOf(item);
 
-                if (e.Type.ToLower() == "deleted")
+                if (e.Type.ToLower() == "removed")
                     newItems.RemoveAt(itemIndex);
                 else
                 {

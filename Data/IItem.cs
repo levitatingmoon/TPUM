@@ -11,7 +11,7 @@ namespace Data
         string Name { get; set; }
         float Price { get; set; }
         Guid Id { get; }
-        ItemType Type { get; }
+        ItemType Type { get; set;  }
 
         public static IItem Create(string name, float price, ItemType type)
         {

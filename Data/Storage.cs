@@ -76,6 +76,7 @@ namespace Data
 
                 itemToRemove.Name = "";
                 itemToRemove.Price = -1f;
+                itemToRemove.Type = ItemType.Removed;
 
                 foreach (var observer in observers)
                     observer.OnNext(item);

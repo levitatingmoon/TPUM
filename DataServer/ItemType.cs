@@ -13,7 +13,8 @@ namespace DataServer
         Carrot,
         Pear,
         Cucumber,
-        Banana
+        Banana,
+        Removed
 
     }
 }

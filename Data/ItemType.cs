@@ -13,7 +13,9 @@ namespace Data
         Carrot,
         Pear,
         Cucumber,
-        Banana
+        Banana,
+        Removed
+          
 
     }
 }

@@ -21,7 +21,7 @@ namespace Data
             switch (m_ClientWebSocket.State)
             {
                 case WebSocketState.Open:
-                    log($"Opening WebSocket connection to remote server {peer}");
+                    //log($"Opening WebSocket connection to remote server {peer}");
                     WebSocketConnection _socket = new ClintWebSocketConnection(m_ClientWebSocket, peer, log);
                     CurrentConnection = _socket;
                     OnConnected?.Invoke();
@@ -64,6 +64,7 @@ namespace Data
 
             public override Task DisconnectAsync()
             {
+                disconnecting = true;
                 return m_ClientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Shutdown procedure started", CancellationToken.None);
             }
 
@@ -83,14 +84,20 @@ namespace Data
             private ClientWebSocket m_ClientWebSocket = null;
             private Uri m_Peer = null;
             private readonly Action<string> m_Log;
+            private bool disconnecting = false;
 
             private void ClientMessageLoop()
             {
+                disconnecting = false;
+
                 try
                 {
                     byte[] buffer = new byte[1024];
                     while (true)
                     {
+                        if (disconnecting)
+                            return;
+
                         ArraySegment<byte> segment = new ArraySegment<byte>(buffer);
                         WebSocketReceiveResult result = m_ClientWebSocket.ReceiveAsync(segment, CancellationToken.None).Result;
                         if (result.MessageType == WebSocketMessageType.Close)
@@ -119,7 +126,9 @@ namespace Data
                 catch (Exception _ex)
                 {
                     m_Log($"Connection has been broken because of an exception {_ex}");
-                    m_ClientWebSocket.CloseAsync(WebSocketCloseStatus.InternalServerError, "Connection has been broken because of an exception", CancellationToken.None).Wait();
+
+                    if (!disconnecting)
+                        m_ClientWebSocket.CloseAsync(WebSocketCloseStatus.InternalServerError, "Connection has been broken because of an exception", CancellationToken.None).Wait();
                 }
             }
 

@@ -144,7 +144,7 @@ namespace Logic
             shopItem.Type = value.Type.ToString();
         
 
-            if (value.Price < -0.01f && value.Name == "")
+            if (value.Price < -0.01f && value.Name == "" && value.Type == ItemType.Removed)
                 OnItemRemoved?.Invoke(this, shopItem);
             else
                 OnItemChanged?.Invoke(this, shopItem);
