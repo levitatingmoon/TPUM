@@ -56,7 +56,7 @@ namespace DataServerTest
             List<IItem> carrots = inventory.GetItemsOfType(ItemType.Carrot);
             Assert.IsNotNull(carrots);
             Assert.AreEqual(1, carrots.Count);
-            Assert.AreEqual(ItemType.Carrot, carrots[0].type);
+            Assert.AreEqual(ItemType.Carrot, carrots[0].Type);
 
         }
 
@@ -76,10 +76,10 @@ namespace DataServerTest
         {
             IItem item = inventory.GetItemsOfType(ItemType.Cucumber)[0];
             Assert.IsNotNull(item);
-            Assert.AreEqual(item.price, 3.0f);
+            Assert.AreEqual(item.Price, 3.0f);
 
-            inventory.ChangePrice(item.id, 5.0f);
-            Assert.AreEqual(item.price, 5.0f);
+            inventory.ChangePrice(item.Id, 5.0f);
+            Assert.AreEqual(item.Price, 5.0f);
         }
     }
 }

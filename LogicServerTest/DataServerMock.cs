@@ -49,21 +49,21 @@ namespace LogicServerTest
 
         public List<IItem> GetItemsOfType(ItemType type)
         {
-            return ItemList.FindAll(item => item.type == type);
+            return ItemList.FindAll(item => item.Type == type);
         }
 
         public void ChangePrice(Guid id, float newPrice)
         {
-            IItem item = ItemList.Find(x => x.id.Equals(id));
+            IItem item = ItemList.Find(x => x.Id.Equals(id));
 
             if (item != null)
                 return;
 
-            if (Math.Abs(newPrice - item.price) < 0.01f)
+            if (Math.Abs(newPrice - item.Price) < 0.01f)
                 return;
 
-            item.price = newPrice;
-            OnPriceChanged(item.id, item.price);
+            item.Price = newPrice;
+            OnPriceChanged(item.Id, item.Price);
         }
 
         private void OnPriceChanged(Guid id, float price)
@@ -77,7 +77,7 @@ namespace LogicServerTest
             List<IItem> items = new List<IItem>();
             foreach (Guid guid in Ids)
             {
-                List<IItem> tmp = ItemList.FindAll(x => x.id == guid);
+                List<IItem> tmp = ItemList.FindAll(x => x.Id == guid);
 
                 if (tmp.Count > 0)
                     items.AddRange(tmp);
@@ -89,18 +89,18 @@ namespace LogicServerTest
 
     public class ItemMock : IItem
     {
-        public string name { get; set; }
-        public float price { get; set; }
-        public Guid id { get; set; }
-        public ItemType type { get; set; }
+        public string Name { get; set; }
+        public float Price { get; set; }
+        public Guid Id { get; set; }
+        public ItemType Type { get; set; }
 
         public ItemMock(string name, float price, ItemType type)
         {
-            this.name = name;
-            this.price = price;
-            this.type = type;
+            this.Name = name;
+            this.Price = price;
+            this.Type = type;
 
-            this.id = Guid.NewGuid();
+            this.Id = Guid.NewGuid();
         }
 
     }
