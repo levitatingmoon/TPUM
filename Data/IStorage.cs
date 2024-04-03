@@ -17,6 +17,7 @@ namespace Data
         public void AddItem(IItem item);
 
         public void AddItems(List<IItem> items);
+        public void RemoveItem(IItem item);
         public void RemoveItems(List<IItem> items);
         public void ChangePrice(Guid id, float newPrice);
         public List<IItem> GetItemsOfType(ItemType type);

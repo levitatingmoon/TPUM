@@ -89,13 +89,13 @@ namespace Logic
         {          
            List<Guid> itemIDs = new List<Guid>();
 
-           foreach (IShopItem item in items)
+           foreach (ShopItem item in items)
                itemIDs.Add(item.Id);
 
             List<IItem> itemsDataLayer = Storage.GetItemsByID(itemIDs);
 
 
-           foreach (IShopItem item in items)
+           foreach (ShopItem item in items)
             {
                 IItem itemTemp = itemsDataLayer.Find(x => x.Id == item.Id);
 

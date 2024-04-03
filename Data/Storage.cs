@@ -62,18 +62,32 @@ namespace Data
             }
         }
 
+        public void RemoveItem(IItem item)
+        {
+            lock (lockObject)
+            {
+                IItem itemToRemove = ItemList.Find(x => x.Id == item.Id);
+                if (itemToRemove == null)
+                {
+                    return;
+                }
+
+                ItemList.Remove(itemToRemove);
+
+                itemToRemove.Name = "";
+                itemToRemove.Price = -1f;
+
+                foreach (var observer in observers)
+                    observer.OnNext(item);
+            }
+        }
+
         public void RemoveItems(List<IItem> items)
         {
             lock (lockObject)
             {
-                items.ForEach(item => {
-                    ItemList.Remove(item);
-
-                    foreach (var observer in observers)
-                        observer.OnNext(item);
-                });
-
-               
+               foreach(var item in items)
+                    RemoveItem(item);           
             }
         }
 

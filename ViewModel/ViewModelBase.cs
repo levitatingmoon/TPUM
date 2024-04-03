@@ -34,6 +34,7 @@ namespace ViewModel
 
             model.StoragePresentation.ItemChanged += OnItemChanged;
             model.StoragePresentation.ItemRemoved += OnItemRemoved;
+            model.StoragePresentation.TransactionSucceeded += OnTransactionSucceeded;
 
             AppleButtonClick = new RelayCommand(AppleButtonClickHandler);
             CarrotButtonClick = new RelayCommand(CarrotButtonClickHandler);
@@ -48,7 +49,11 @@ namespace ViewModel
             ConnectButtonClick = new RelayCommand(() => ConnectButtonClickHandler());
         }
 
-      
+        private void OnTransactionSucceeded(object? sender, List<ItemPresentation> e)
+        {
+            
+        }
+
         public ObservableCollection<ItemPresentation> Items
         {
             get
@@ -151,10 +156,15 @@ namespace ViewModel
 
         }
         private void MainPageButtonClickHandler()
-        {
+        {   
             CartViewVisibility = "Hidden";
             MainViewVisibility = "Visible";
 
+            Items.Clear();
+            foreach (ItemPresentation item in model.StoragePresentation.GetItems())
+            {
+                Items.Add(item);
+            }
         }
 
         private void AllItemsButtonClickHandler()

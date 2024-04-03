@@ -8,7 +8,7 @@ namespace Data
 {
     public interface IItem
     {
-        string Name { get; }
+        string Name { get; set; }
         float Price { get; set; }
         Guid Id { get; }
         ItemType Type { get; }
