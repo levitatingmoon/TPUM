@@ -18,13 +18,13 @@ namespace DataServer
         {
             ItemList = new List<IItem>();
 
-           // ItemList.Add(new Item("Golden Delicious", 4.0f, ItemType.Apple));
-           // ItemList.Add(new Item("Red Delicious", 5.0f, ItemType.Apple));
+            ItemList.Add(new Item("Golden Delicious", 4.0f, ItemType.Apple));
+            ItemList.Add(new Item("Red Delicious", 5.0f, ItemType.Apple));
             ItemList.Add(new Item("Premium Banana", 5.5f, ItemType.Banana));
-            //ItemList.Add(new Item("Yellow Carrots", 4.5f, ItemType.Carrot));
-            //ItemList.Add(new Item("Asian Pear", 6.0f, ItemType.Pear));
-           // ItemList.Add(new Item("European Pear", 3.5f, ItemType.Pear));
-           // ItemList.Add(new Item("Persian Cucumbers", 6.5f, ItemType.Cucumber));
+            ItemList.Add(new Item("Yellow Carrots", 4.5f, ItemType.Carrot));
+            ItemList.Add(new Item("Asian Pear", 6.0f, ItemType.Pear));
+            ItemList.Add(new Item("European Pear", 3.5f, ItemType.Pear));
+            ItemList.Add(new Item("Persian Cucumbers", 6.5f, ItemType.Cucumber));
 
         }
 
@@ -59,7 +59,7 @@ namespace DataServer
             {
                 foreach (IItem item in ItemList)
                 {
-                    if (item.type == type)
+                    if (item.Type == type)
                     {
                         items.Add(item);
                     }
@@ -70,18 +70,18 @@ namespace DataServer
 
         public void ChangePrice(Guid id, float newPrice)
         {
-            IItem item = ItemList.Find(x => x.id.Equals(id));
+            IItem item = ItemList.Find(x => x.Id.Equals(id));
             lock (lockObject)
             {
 
                 if (item == null)
                     return;
 
-                if (Math.Abs(newPrice - item.price) < 0.01f)
+                if (Math.Abs(newPrice - item.Price) < 0.01f)
                     return;
 
-                item.price = newPrice;
-                OnPriceChanged(item.id, item.price);
+                item.Price = newPrice;
+                OnPriceChanged(item.Id, item.Price);
             }
         }
 
@@ -99,7 +99,7 @@ namespace DataServer
             {
                 foreach (Guid guid in Ids)
                 {
-                    List<IItem> tmp = ItemList.FindAll(x => x.id == guid);
+                    List<IItem> tmp = ItemList.FindAll(x => x.Id == guid);
 
                     if (tmp.Count > 0)
                         items.AddRange(tmp);

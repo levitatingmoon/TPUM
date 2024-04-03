@@ -51,8 +51,8 @@ namespace LogicServer
                     {
                         DiscountValue = ((float)Rand.NextDouble() * 0.7f) + 0.5f;
                         item = Storage.ItemList[Rand.Next(0, Storage.ItemList.Count)];
-                        ItemOnSaleId = item.id;
-                        Storage.ChangePrice(ItemOnSaleId, item.price * DiscountValue);
+                        ItemOnSaleId = item.Id;
+                        Storage.ChangePrice(ItemOnSaleId, item.Price * DiscountValue);
                     }
                 }
 

@@ -13,18 +13,18 @@ namespace Data
     internal class Item : IItem
     {
 
-        public string name { get; set; }
-        public float price { get; set; }
-        public Guid id { get; set; }
-        public ItemType type { get; set; }
+        public string Name { get; set; }
+        public float Price { get; set; }
+        public Guid Id { get; set; }
+        public ItemType Type { get; set; }
 
         [JsonConstructor]
         public Item(string name, float price, Guid id, ItemType type) {
 
-            this.name = name;
-            this.price = price;
-            this.id = id;
-            this.type = type;
+            Name = name;
+            Price = price;
+            Id = id;
+            Type = type;
 
          
         }
@@ -32,11 +32,10 @@ namespace Data
 
         public Item(string name, float price, ItemType type)
         {
-            this.name = name;
-            this.price = price;
-            this.type = type;
-
-            this.id = Guid.NewGuid();
+            Name = name;
+            Price = price;
+            Id = Guid.NewGuid();
+            Type = type;
         }
     }
 }

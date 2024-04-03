@@ -9,18 +9,18 @@ namespace DataServer
     internal class Item : IItem
     {
 
-        public string name { get; set; }
-        public float price { get; set; }
-        public Guid id { get; set; }
-        public ItemType type { get; set; }
+        public string Name { get; set; }
+        public float Price { get; set; }
+        public Guid Id { get; set; }
+        public ItemType Type { get; set; }
 
         public Item(string name, float price, ItemType type)
         {
-            this.name = name;
-            this.price = price;
-            this.type = type;
+            Name = name;
+            Price = price;
+            Type = type;
 
-            this.id = Guid.NewGuid();
+            Id = Guid.NewGuid();
         }
     }
 }

@@ -327,7 +327,14 @@ namespace ViewModel
 
         public void HandlePriceChanged(object? sender, Model.PriceChangedEventArgs args)
         {
-            RefreshItems();
+            //RefreshItems();
+
+            ObservableCollection<ItemPresentation> newItems = Items;
+            ItemPresentation item = newItems.FirstOrDefault(x => x.Id == args.Id);
+            int itemIndex = newItems.IndexOf(item);
+            newItems[itemIndex].Price = args.Price;
+            Items = new ObservableCollection<ItemPresentation>(newItems);
+
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

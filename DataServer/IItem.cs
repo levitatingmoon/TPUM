@@ -8,10 +8,10 @@ namespace DataServer
 {
     public interface IItem
     {
-        string name { get; }
-        float price { get; set; }
-        Guid id { get; }
-        ItemType type { get; }
+        string Name { get; }
+        float Price { get; set; }
+        Guid Id { get; }
+        ItemType Type { get; }
 
         public static IItem Create(string name, float price, ItemType type)
         {

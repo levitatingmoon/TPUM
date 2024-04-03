@@ -34,16 +34,16 @@ namespace LogicServer
 
             foreach (IItem item in Storage.ItemList)
             {
-                float price = item.price;
-                if (item.id.Equals(discount.Item1))
+                float price = item.Price;
+                if (item.Id.Equals(discount.Item1))
                     price *= discount.Item2;
 
                 availableItems.Add(new ShopItem
                 {
-                    Name = item.name,
+                    Name = item.Name,
                     Price = price,
-                    Id = item.id,
-                    Type = item.type.ToString()
+                    Id = item.Id,
+                    Type = (int)item.Type
                 });
             }
 

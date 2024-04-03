@@ -40,10 +40,10 @@ namespace Logic
             foreach (IItem item in e)
             {
                 ShopItem shopItem = new ShopItem();
-                shopItem.Type = item.type.ToString();
-                shopItem.Id = item.id;
-                shopItem.Name = item.name;
-                shopItem.Price = item.price;
+                shopItem.Type = item.Type.ToString();
+                shopItem.Id = item.Id;
+                shopItem.Name = item.Name;
+                shopItem.Price = item.Price;
 
                 soldItems.Add(shopItem);
             }
@@ -69,16 +69,16 @@ namespace Logic
 
             foreach (IItem item in Storage.ItemList)
             {
-                float price = item.price;
-                if (item.id.Equals(discount.Item1))
+                float price = item.Price;
+                if (item.Id.Equals(discount.Item1))
                     price *= discount.Item2;
 
                 availableItems.Add(new ShopItem
                 {
-                    Name = item.name,
+                    Name = item.Name,
                     Price = price,
-                    Id = item.id,
-                    Type = item.type.ToString()               
+                    Id = item.Id,
+                    Type = item.Type.ToString()               
                 });
             }
 
@@ -97,11 +97,11 @@ namespace Logic
 
            foreach (IShopItem item in items)
             {
-                IItem itemTemp = itemsDataLayer.Find(x => x.id == item.Id);
+                IItem itemTemp = itemsDataLayer.Find(x => x.Id == item.Id);
 
                 if (itemTemp != null)
                 {
-                    itemTemp.price = item.Price;
+                    itemTemp.Price = item.Price;
                 }
             }
                   
@@ -138,13 +138,13 @@ namespace Logic
         public void OnNext(IItem value)
         {
             ShopItem shopItem = new ShopItem();
-            shopItem.Price = value.price;
-            shopItem.Id = value.id;
-            shopItem.Name = value.name;
-            shopItem.Type = value.type.ToString();
+            shopItem.Price = value.Price;
+            shopItem.Id = value.Id;
+            shopItem.Name = value.Name;
+            shopItem.Type = value.Type.ToString();
         
 
-            if (value.price < -0.01f && value.name == "")
+            if (value.Price < -0.01f && value.Name == "")
                 OnItemRemoved?.Invoke(this, shopItem);
             else
                 OnItemChanged?.Invoke(this, shopItem);

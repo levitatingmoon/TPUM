@@ -84,7 +84,7 @@ namespace Data
             {
                 foreach (IItem item in ItemList)
                 {
-                    if (item.type == type)
+                    if (item.Type == type)
                     {
                         items.Add(item);
                     }
@@ -95,18 +95,18 @@ namespace Data
 
         public void ChangePrice(Guid id, float newPrice)
         {
-            IItem item = ItemList.Find(x => x.id.Equals(id));
+            IItem item = ItemList.Find(x => x.Id.Equals(id));
             lock (lockObject)
             {
 
                 if (item == null)
                     return;
 
-                if (Math.Abs(newPrice - item.price) < 0.01f)
+                if (Math.Abs(newPrice - item.Price) < 0.01f)
                     return;
 
-                item.price = newPrice;
-                OnPriceChanged(item.id, item.price);
+                item.Price = newPrice;
+                OnPriceChanged(item.Id, item.Price);
             }
         }
 
@@ -124,7 +124,7 @@ namespace Data
             {
                 foreach (Guid guid in Ids)
                 {
-                    List<IItem> tmp = ItemList.FindAll(x => x.id == guid);
+                    List<IItem> tmp = ItemList.FindAll(x => x.Id == guid);
 
                     if (tmp.Count > 0)
                         items.AddRange(tmp);
