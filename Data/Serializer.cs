@@ -16,7 +16,7 @@ namespace Data
 
         public static IItem JSONToItem(string json)
         {
-            return JsonSerializer.Deserialize<IItem>(json);
+            return JsonSerializer.Deserialize<Item>(json);
         }
 
         public static string StorageToJSON(List<IItem> items)
