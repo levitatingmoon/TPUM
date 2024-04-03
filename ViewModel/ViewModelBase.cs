@@ -17,7 +17,7 @@ namespace ViewModel
         private string cartViewVisibility;
         private ShoppingCart shoppingCart;
         private float cartValue;
-        private string connectButtonText;
+        private string connectButtonText = "Connect";
 
         public ViewModelBase()
         {
@@ -342,7 +342,10 @@ namespace ViewModel
             ObservableCollection<ItemPresentation> newItems = Items;
             ItemPresentation item = newItems.FirstOrDefault(x => x.Id == args.Id);
             int itemIndex = newItems.IndexOf(item);
-            newItems[itemIndex].Price = args.Price;
+            if (itemIndex >= 0)
+            {
+                newItems[itemIndex].Price = args.Price;
+            }
             Items = new ObservableCollection<ItemPresentation>(newItems);
 
         }

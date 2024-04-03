@@ -87,7 +87,7 @@ namespace LogicServerTest
         }
     }
 
-    public class ItemMock : IItem
+    internal class ItemMock : IItem
     {
         public string Name { get; set; }
         public float Price { get; set; }
