@@ -39,6 +39,11 @@ namespace LogicTest
             ItemList.Add(item);
         }
 
+        public IItem CreateItem(string name, float price, ItemType type)
+        {
+            return new ItemMock(name, price, type);
+        }
+
         public void AddItems(List<IItem> items)
         {
             ItemList.AddRange(items);

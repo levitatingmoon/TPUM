@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
 namespace Data
@@ -11,22 +12,22 @@ namespace Data
     {
         public static string ItemToJSON(IItem item)
         {
-            return JsonSerializer.Serialize(item);
+            return JsonConvert.SerializeObject(item);
         }
 
         public static IItem JSONToItem(string json)
         {
-            return JsonSerializer.Deserialize<Item>(json);
+            return JsonConvert.DeserializeObject<Item>(json);
         }
 
         public static string StorageToJSON(List<IItem> items)
         {
-            return JsonSerializer.Serialize(items);
+            return JsonConvert.SerializeObject(items);
         }
 
         public static List<IItem> JSONToStorage(string json)
         {
-            return new List<IItem>(JsonSerializer.Deserialize<List<Item>>(json)!);
+            return new List<IItem>(JsonConvert.DeserializeObject<List<Item>>(json)!);
         }
     }
 }

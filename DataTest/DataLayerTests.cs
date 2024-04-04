@@ -8,6 +8,7 @@ namespace DataTest
 
         private IStorage inventory;
 
+        
         [TestInitialize]
         public void TestMethod()
         {
@@ -19,8 +20,8 @@ namespace DataTest
             Assert.AreEqual(0, inventory.ItemList.Count);
 
             List<IItem> items = new List<IItem>();
-            IItem item1 = IItem.Create("small carrot", 2.0f, ItemType.Carrot);
-            IItem item2 = IItem.Create("cucumber", 3.0f, ItemType.Cucumber);
+            IItem item1 = inventory.CreateItem("small carrot", 2.0f, ItemType.Carrot);
+            IItem item2 = inventory.CreateItem("cucumber", 3.0f, ItemType.Cucumber);
             items.Add(item1);
             items.Add(item2);
 
@@ -32,7 +33,7 @@ namespace DataTest
         public void AddItemTest()
         {
 
-            IItem item = IItem.Create("golden delicious", 5.0f, ItemType.Apple);
+            IItem item = inventory.CreateItem("golden delicious", 5.0f, ItemType.Apple);
             inventory.AddItem(item);
             Assert.AreEqual(3, inventory.ItemList.Count);
         }
@@ -42,8 +43,8 @@ namespace DataTest
         {
 
             List<IItem> items = new List<IItem>();
-            items.Add(IItem.Create("carrot", 4.0f, ItemType.Carrot));
-            items.Add(IItem.Create("banana", 3.0f, ItemType.Banana));
+            items.Add(inventory.CreateItem("carrot", 4.0f, ItemType.Carrot));
+            items.Add(inventory.CreateItem("banana", 3.0f, ItemType.Banana));
             inventory.AddItems(items);
             Assert.AreEqual(4, inventory.ItemList.Count);
 
@@ -82,5 +83,7 @@ namespace DataTest
             inventory.ChangePrice(item.Id, 5.0f);
             Assert.AreEqual(item.Price, 5.0f);
         }
+        
     }
+
 }

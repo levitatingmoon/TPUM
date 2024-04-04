@@ -1,10 +1,14 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using Model;
 using System.Windows.Input;
+using System.Threading.Tasks;
+using System.Linq;
 using System.Diagnostics;
 using ViewModel;
+using System;
 
 namespace ViewModel
 {
@@ -49,7 +53,7 @@ namespace ViewModel
             ConnectButtonClick = new RelayCommand(() => ConnectButtonClickHandler());
         }
 
-        private void OnTransactionSucceeded(object? sender, List<ItemPresentation> e)
+        private void OnTransactionSucceeded(object sender, List<ItemPresentation> e)
         {
             
         }
@@ -110,7 +114,7 @@ namespace ViewModel
         }
 
 
-        private void OnItemChanged(object? sender, ItemPresentation e)
+        private void OnItemChanged(object sender, ItemPresentation e)
         {
             ObservableCollection<ItemPresentation> newItems = new ObservableCollection<ItemPresentation>(Items);
             ItemPresentation item = newItems.FirstOrDefault(x => x.Id == e.Id);
@@ -135,7 +139,7 @@ namespace ViewModel
             Items = new ObservableCollection<ItemPresentation>(newItems);
         }
 
-        private void OnItemRemoved(object? sender, ItemPresentation e)
+        private void OnItemRemoved(object sender, ItemPresentation e)
         {
             ObservableCollection<ItemPresentation> newItems = new ObservableCollection<ItemPresentation>(Items);
             ItemPresentation Item = newItems.FirstOrDefault(x => x.Id == e.Id);
@@ -335,7 +339,7 @@ namespace ViewModel
             }
         }
 
-        public void HandlePriceChanged(object? sender, Model.PriceChangedEventArgs args)
+        public void HandlePriceChanged(object sender, Model.PriceChangedEventArgs args)
         {
             //RefreshItems();
 
@@ -350,8 +354,8 @@ namespace ViewModel
 
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -149,6 +149,11 @@ namespace Data
             return items;
         }
 
+        public IItem CreateItem(string name, float price , ItemType type)
+        {
+            return new Item(name, price, type);
+        }
+
         public async Task SendAsync(string mesg)
         {
             waitingForStorageUpdate = true;
@@ -191,7 +196,7 @@ namespace Data
             else if (message.Contains("PriceChanged"))
             {
                 string priceChangedStr = message.Substring("PriceChanged".Length);
-                string[] parts = priceChangedStr.Split("/");
+                string[] parts = priceChangedStr.Split('/');
                 ChangePrice(Guid.Parse(parts[1]), float.Parse(parts[0]));
             }
         }

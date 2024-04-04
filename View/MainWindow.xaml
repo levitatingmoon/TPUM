@@ -52,7 +52,7 @@
         <Canvas Background="DarkSeaGreen" x:Name="ShoppingCartView" Visibility="{Binding CartViewVisibility}">
             <StackPanel Orientation="Horizontal">
                 <StackPanel Orientation="Vertical" Width="137">
-                    
+
                 </StackPanel>
                 <StackPanel Width="505" >
                     <ScrollViewer Height="414" Width="422">
