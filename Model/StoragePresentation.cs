@@ -13,9 +13,9 @@ namespace Model
         private IConnectionService ConnectionService;
 
         public event EventHandler<PriceChangedEventArgs> PriceChanged;
-        public event EventHandler<ItemPresentation> ItemChanged;
-        public event EventHandler<ItemPresentation> ItemRemoved;
-        public event EventHandler<List<ItemPresentation>> TransactionSucceeded;
+        public event EventHandler<IItemPresentation> ItemChanged;
+        public event EventHandler<IItemPresentation> ItemRemoved;
+        public event EventHandler<List<IItemPresentation>> TransactionSucceeded;
         public event EventHandler TransactionFailed;
 
         public StoragePresentation(IShop shop)
@@ -30,12 +30,12 @@ namespace Model
             ConnectionService.ConnectionLogger += ConnectionLogger;
         }
 
-        public List<ItemPresentation> GetItems()
+        public List<IItemPresentation> GetItems()
         {
-            List<ItemPresentation> items = new List<ItemPresentation>();
+            List<IItemPresentation> items = new List<IItemPresentation>();
             foreach (IShopItem item in Shop.GetItems())
             {
-                items.Add(new ItemPresentation(item.Name, item.Price, item.Id, item.Type));
+                items.Add(CreateItem(item.Name, item.Price, item.Id, item.Type));
             }
             return items;
         }
@@ -68,18 +68,18 @@ namespace Model
 
         private void OnItemRemoved(object? sender, IShopItem e)
         {
-            EventHandler<ItemPresentation> handler = ItemRemoved;
-            ItemPresentation Item = new ItemPresentation(e.Name, e.Price, e.Id, e.Type);
+            EventHandler<IItemPresentation> handler = ItemRemoved;
+            IItemPresentation Item = CreateItem(e.Name, e.Price, e.Id, e.Type);
             handler?.Invoke(this, Item);
         }
 
         private void OnTransactionSucceeded(object? sender, List<IShopItem> e)
         {
-            EventHandler<List<ItemPresentation>> handler = TransactionSucceeded;
-            List<ItemPresentation> soldItemPresentations = new List<ItemPresentation>();
+            EventHandler<List<IItemPresentation>> handler = TransactionSucceeded;
+            List<IItemPresentation> soldItemPresentations = new List<IItemPresentation>();
             foreach (IShopItem shopItem in e)
             {
-                ItemPresentation ItemPresentation = new ItemPresentation(shopItem.Name, shopItem.Price, shopItem.Id,
+                IItemPresentation ItemPresentation = CreateItem(shopItem.Name, shopItem.Price, shopItem.Id,
                      shopItem.Type);
                 soldItemPresentations.Add(ItemPresentation);
             }
@@ -95,9 +95,14 @@ namespace Model
 
         private void OnItemChanged(object? sender, IShopItem e)
         {
-            EventHandler<ItemPresentation> handler = ItemChanged;
-            ItemPresentation item = new ItemPresentation(e.Name, e.Price, e.Id, e.Type);
+            EventHandler<IItemPresentation> handler = ItemChanged;
+            IItemPresentation item = CreateItem(e.Name, e.Price, e.Id, e.Type);
             handler?.Invoke(this, item);
+        }
+
+        public IItemPresentation CreateItem(string name, float price, Guid id, string type)
+        {
+            return new ItemPresentation(name, price, id, type);
         }
 
         private void OnPriceChanged(object sender, Logic.PriceChangedEventArgs e)

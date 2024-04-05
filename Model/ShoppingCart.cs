@@ -10,16 +10,16 @@ namespace Model
 {
     public class ShoppingCart
     {
-        public ObservableCollection<ItemPresentation> Items { get; set; }
+        public ObservableCollection<IItemPresentation> Items { get; set; }
         private IShop Shop { get; set; }
 
-        public ShoppingCart(ObservableCollection<ItemPresentation> items, IShop shop)
+        public ShoppingCart(ObservableCollection<IItemPresentation> items, IShop shop)
         {
             Items = items;
             Shop = shop;
         }
 
-        public void Add(ItemPresentation item)
+        public void Add(IItemPresentation item)
         {
             Items.Add(item);
         }
@@ -27,7 +27,7 @@ namespace Model
         public float Sum()
         {
             float res = 0f;
-            foreach (ItemPresentation item in Items)
+            foreach (IItemPresentation item in Items)
             {
                 res += item.Price;
             }
@@ -39,7 +39,7 @@ namespace Model
         {
             List<IShopItem> shoppingList = new List<IShopItem>();
 
-            foreach (ItemPresentation itemPresentation in Items)
+            foreach (IItemPresentation itemPresentation in Items)
             {
                 shoppingList.Add(Shop.GetItems().FirstOrDefault(x => x.Id == itemPresentation.Id));
             }
