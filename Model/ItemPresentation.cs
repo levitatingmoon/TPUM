@@ -9,13 +9,21 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public class ItemPresentation : INotifyPropertyChanged
+    internal class ItemPresentation : IItemPresentation, INotifyPropertyChanged
     {
         public ItemPresentation(string name, float price, Guid id, string itemType)
         {
             Name = name;
             Price = price;
             Id = id;
+            Type = itemType;
+        }
+
+        public ItemPresentation(string name, float price, string itemType)
+        {
+            Name = name;
+            Price = price;
+            Id = Guid.NewGuid();
             Type = itemType;
         }
 
@@ -32,5 +40,24 @@ namespace Model
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
+
+    public interface IItemPresentation
+    {
+
+
+        public string Name { get; set; }
+        public float Price { get; set; }
+        public Guid Id { get; set; }
+        public string Type { get; set; }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public static IItemPresentation Create(string name, float price, Guid id, string type)
+        {
+            return new ItemPresentation(name, price, id, type);
+        }
+
     }
 }

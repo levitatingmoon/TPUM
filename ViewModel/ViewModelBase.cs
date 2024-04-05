@@ -12,7 +12,7 @@ namespace ViewModel
     {
         
         private Model.Model model;
-        private ObservableCollection<ItemPresentation> items;
+        private ObservableCollection<IItemVM> items; //IItemVM
         private string mainViewVisibility;
         private string cartViewVisibility;
         private ShoppingCart shoppingCart;
@@ -23,13 +23,15 @@ namespace ViewModel
         {
             this.model = new Model.Model(null);
             this.model.PriceChanged += HandlePriceChanged;
-            this.items = new ObservableCollection<ItemPresentation>();
+            this.items = new ObservableCollection<IItemVM>(); //IItemVM
             MainViewVisibility = this.model.MainViewVisibility;
             CartViewVisibility = this.model.CartViewVisibility;
             shoppingCart = this.model.ShoppingCart;
-            foreach (ItemPresentation item in this.model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in this.model.StoragePresentation.GetItems())
             {
-                items.Add(item);
+                //dac new IItemVm(item.name etc) jak w shop na 40 linijce
+                ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                items.Add(itemVM);
             }
 
             model.StoragePresentation.ItemChanged += OnItemChanged;
@@ -49,12 +51,12 @@ namespace ViewModel
             ConnectButtonClick = new RelayCommand(() => ConnectButtonClickHandler());
         }
 
-        private void OnTransactionSucceeded(object? sender, List<ItemPresentation> e)
+        private void OnTransactionSucceeded(object? sender, List<IItemPresentation> e)
         {
             
         }
 
-        public ObservableCollection<ItemPresentation> Items
+        public ObservableCollection<IItemVM> Items //IItemVM
         {
             get
             {
@@ -97,8 +99,11 @@ namespace ViewModel
                 {
                     ConnectButtonText = "Connected!";
                     Items.Clear();
-                    foreach (ItemPresentation item in model.StoragePresentation.GetItems())
-                        Items.Add(item);
+                    foreach (IItemPresentation item in model.StoragePresentation.GetItems())
+                    {
+                        ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                        Items.Add(itemVM);
+                    }
                 }
             }
             else
@@ -110,10 +115,10 @@ namespace ViewModel
         }
 
 
-        private void OnItemChanged(object? sender, ItemPresentation e)
+        private void OnItemChanged(object? sender, IItemPresentation e)
         {
-            ObservableCollection<ItemPresentation> newItems = new ObservableCollection<ItemPresentation>(Items);
-            ItemPresentation item = newItems.FirstOrDefault(x => x.Id == e.Id);
+            ObservableCollection<IItemVM> newItems = new ObservableCollection<IItemVM>(Items); //IItemVM
+            IItemVM item = newItems.FirstOrDefault(x => x.Id == e.Id);
 
             if (item != null)
             {
@@ -130,15 +135,19 @@ namespace ViewModel
                 }
             }
             else
-                newItems.Add(e);
+            {
+                ItemVM itemVM = new ItemVM(e.Name, e.Price, e.Id, e.Type);
+                newItems.Add(itemVM);
+            }
+                //newItems.Add(e);
 
-            Items = new ObservableCollection<ItemPresentation>(newItems);
+            Items = new ObservableCollection<IItemVM>(newItems); //IItemVM
         }
 
-        private void OnItemRemoved(object? sender, ItemPresentation e)
+        private void OnItemRemoved(object? sender, IItemPresentation e)
         {
-            ObservableCollection<ItemPresentation> newItems = new ObservableCollection<ItemPresentation>(Items);
-            ItemPresentation Item = newItems.FirstOrDefault(x => x.Id == e.Id);
+            ObservableCollection<IItemVM> newItems = new ObservableCollection<IItemVM>(Items); //IItemVM
+            IItemVM Item = newItems.FirstOrDefault(x => x.Id == e.Id);
 
             if (Item != null)
             {
@@ -146,7 +155,7 @@ namespace ViewModel
                 newItems.RemoveAt(itemIndex);
             }
 
-            Items = new ObservableCollection<ItemPresentation>(newItems);
+            Items = new ObservableCollection<IItemVM>(newItems); //IItemVM
         }
 
         private void CartButtonClickHandler()
@@ -161,37 +170,49 @@ namespace ViewModel
             MainViewVisibility = "Visible";
 
             Items.Clear();
-            foreach (ItemPresentation item in model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in model.StoragePresentation.GetItems())
             {
-                Items.Add(item);
+                //Items.Add(item); //IItemVM jak w shop40
+                ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                Items.Add(itemVM);
             }
         }
 
         private void AllItemsButtonClickHandler()
         {
             items.Clear();
-            foreach (ItemPresentation item in this.model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in this.model.StoragePresentation.GetItems())
             {
-                items.Add(item);
+                //items.Add(item); //IItemVM jak w shop40
+                ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                items.Add(itemVM);
             }
         }
 
         private void AppleButtonClickHandler()
         {
             items.Clear();
-            foreach (ItemPresentation item in this.model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in this.model.StoragePresentation.GetItems())
             {
                 if (item.Type.Equals("Apple"))
-                    items.Add(item);
+                {
+                    ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                    items.Add(itemVM);
+                }
+                    //items.Add(item); //IItemVM jak w shop40
             }
         }
         private void CarrotButtonClickHandler()
         {
             items.Clear();
-            foreach (ItemPresentation item in this.model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in this.model.StoragePresentation.GetItems())
             {
                 if (item.Type.Equals("Carrot"))
-                    items.Add(item);
+                {
+                    ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                    items.Add(itemVM);
+                }
+                    //items.Add(item); //IItemVM jak w shop40
             }
 
         }
@@ -200,46 +221,58 @@ namespace ViewModel
         private void PearButtonClickHandler()
         {
             items.Clear();
-            foreach (ItemPresentation item in this.model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in this.model.StoragePresentation.GetItems())
             {
                 if (item.Type.Equals("Pear"))
-                    items.Add(item);
+                {
+                    ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                    items.Add(itemVM);
+                }
+                    //items.Add(item); //IItemVM jak w shop40
             }
         }
         private void CucumberButtonClickHandler()
         {
             items.Clear();
-            foreach (ItemPresentation item in this.model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in this.model.StoragePresentation.GetItems())
             {
                 if (item.Type.Equals("Cucumber"))
-                    items.Add(item);
+                {
+                    ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                    items.Add(itemVM);
+                }
+                    //items.Add(item); //IItemVM jak w shop40
             }
         }
         private void BananaButtonClickHandler()
         {
             items.Clear();
-            foreach (ItemPresentation item in this.model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in this.model.StoragePresentation.GetItems())
             {
                 if (item.Type.Equals("Banana"))
-                    items.Add(item);
+                {
+                    ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                    items.Add(itemVM);
+                }
+                    //items.Add(item); //IItemVM jak w shop40
             }
         }
 
 
         public void ItemButtonClickHandler(Guid id)
         {
-            foreach (ItemPresentation item in this.shoppingCart.Items)
+            foreach (IItemPresentation item in this.shoppingCart.Items)
             {
                 if (item.Id.Equals(id))
                 {
                     return;
                 }
             }
-            foreach (ItemPresentation item in this.model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in this.model.StoragePresentation.GetItems())
             {
                 if (item.Id.Equals(id))
                 {
-                    shoppingCart.Add(item);
+                    shoppingCart.Add(item); //???????????
                     CartValue = shoppingCart.Sum();
                 }
             }
@@ -251,9 +284,11 @@ namespace ViewModel
             CartValue = shoppingCart.Sum();
 
             Items.Clear();
-            foreach (ItemPresentation item in model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in model.StoragePresentation.GetItems())
             {
-                Items.Add(item);
+                //Items.Add(item); //IItemVM jak w shop40
+                ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                Items.Add(itemVM);
             }
         }
 
@@ -329,9 +364,11 @@ namespace ViewModel
         public void RefreshItems()
         {
             Items.Clear();
-            foreach (ItemPresentation item in model.StoragePresentation.GetItems())
+            foreach (IItemPresentation item in model.StoragePresentation.GetItems())
             {
-                Items.Add(item);
+                //Items.Add(item); //IItemVM jak w shop40
+                ItemVM itemVM = new ItemVM(item.Name, item.Price, item.Id, item.Type);
+                Items.Add(itemVM);
             }
         }
 
@@ -339,14 +376,14 @@ namespace ViewModel
         {
             //RefreshItems();
 
-            ObservableCollection<ItemPresentation> newItems = Items;
-            ItemPresentation item = newItems.FirstOrDefault(x => x.Id == args.Id);
+            ObservableCollection<IItemVM> newItems = Items;
+            IItemVM item = newItems.FirstOrDefault(x => x.Id == args.Id);
             int itemIndex = newItems.IndexOf(item);
             if (itemIndex >= 0)
             {
                 newItems[itemIndex].Price = args.Price;
             }
-            Items = new ObservableCollection<ItemPresentation>(newItems);
+            Items = new ObservableCollection<IItemVM>(newItems);
 
         }
 
