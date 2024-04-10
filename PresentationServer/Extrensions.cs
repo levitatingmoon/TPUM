@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using LogicServer;
 
 namespace PresentationServer
 {
@@ -9,6 +10,16 @@ namespace PresentationServer
         {
             byte[] buffer = Encoding.UTF8.GetBytes(message);
             return new ArraySegment<byte>(buffer);
+        }
+
+        public static ShopItem ToDTO(this IShopItem item)
+        {
+            return new ShopItem(          
+                item.Name,
+                item.Price,
+                item.Id,
+                item.Type
+            );
         }
     }
 }

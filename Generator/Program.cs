@@ -1,4 +1,5 @@
 ﻿using LogicServer;
+using PresentationServer;
 using Newtonsoft.Json.Schema;
 using NJsonSchema;
 using NJsonSchema.CodeGeneration.CSharp;
@@ -11,7 +12,7 @@ internal static class Program
     private static async Task Main(string[] args)
     {
         Console.WriteLine("JSON Schema: \n\n");
-        JsonSchema schema = JsonSchema.FromType<IShopItem>();
+        JsonSchema schema = JsonSchema.FromType<ShopItem>();
         string schemaString = schema.ToJson();
 
         Console.WriteLine(schemaString);

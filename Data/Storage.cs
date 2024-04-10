@@ -57,8 +57,8 @@ namespace Data
         {
             lock (lockObject)
             {
-                foreach (var item in items)          
-                    AddItem(item);                    
+                foreach (ShopItem item in items)          
+                    AddItem(item.ToItem());                    
             }
         }
 

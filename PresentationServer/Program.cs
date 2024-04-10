@@ -65,6 +65,7 @@ namespace PresentationServer
         static async Task SendCurrentStorageState()
         {
             var items = shop.GetItems();
+            //var tempItems = items.Select(x=> x.ToDTO()).ToArray();
             var json = Serializer.StorageToJSON(items);
             var message = "UpdateAll" + json;
 

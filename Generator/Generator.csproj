@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LogicServer\LogicServer.csproj" />
+    <ProjectReference Include="..\PresentationServer\PresentationServer.csproj" />
   </ItemGroup>
 
 </Project>
