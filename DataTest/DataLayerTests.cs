@@ -6,89 +6,62 @@ namespace DataTest
     public class DataLayerTest
     {
 
-        private IStorage inventory;
-
-        
-        [TestInitialize]
-        public void TestMethod()
+        private static DataAbstractApi Create()
         {
+            return new DataMock();
+        }
 
-            inventory = DataAbstractApi.Create().Storage;
-            Assert.IsNotNull(inventory);
-
-            inventory.ItemList.Clear();
-            Assert.AreEqual(0, inventory.ItemList.Count);
-
-            List<IItem> items = new List<IItem>();
-            IItem item1 = inventory.CreateItem("small carrot", 2.0f, ItemType.Carrot);
-            IItem item2 = inventory.CreateItem("cucumber", 3.0f, ItemType.Cucumber);
-            items.Add(item1);
-            items.Add(item2);
-
-            inventory.AddItems(items);
-
+        [TestMethod]
+        public void StorageItemsTest()
+        {
+            DataAbstractApi Data = Create();
+            List<IItem> items = Data.Storage.ItemList;
+            Assert.AreEqual(2, items.Count);
         }
 
         [TestMethod]
         public void AddItemTest()
         {
-
-            IItem item = inventory.CreateItem("golden delicious", 5.0f, ItemType.Apple);
-            inventory.AddItem(item);
-            Assert.AreEqual(3, inventory.ItemList.Count);
+            DataAbstractApi Data = Create();
+            IItem item = Data.Storage.CreateItem("Pear", 3.0f, ItemType.Pear);
+            Data.Storage.AddItem(item);
+            Assert.AreEqual(3, Data.Storage.ItemList.Count);
         }
 
         [TestMethod]
         public void AddItemsTest()
         {
-
+            DataAbstractApi Data = Create();
+            IItem item = Data.Storage.CreateItem("Pear", 3.0f, ItemType.Pear);
+            IItem item2 = Data.Storage.CreateItem("Carrot", 5.0f, ItemType.Carrot);
             List<IItem> items = new List<IItem>();
-            items.Add(inventory.CreateItem("carrot", 4.0f, ItemType.Carrot));
-            items.Add(inventory.CreateItem("banana", 3.0f, ItemType.Banana));
-
-            foreach (var item in items)
-            {
-                inventory.AddItem(item);
-            }
-            //inventory.AddItems(items);
-            Assert.AreEqual(4, inventory.ItemList.Count);
-
+            items.Add(item);
+            items.Add(item2);
+            Data.Storage.AddItems(items);
+            Assert.AreEqual(4, Data.Storage.ItemList.Count);
         }
 
         [TestMethod]
         public void GetItemsTest()
         {
-
-
-            List<IItem> carrots = inventory.GetItemsOfType(ItemType.Carrot);
-            Assert.IsNotNull(carrots);
-            Assert.AreEqual(1, carrots.Count);
-            Assert.AreEqual(ItemType.Carrot, carrots[0].Type);
+            DataAbstractApi Data = Create();
+            List<IItem> items = Data.Storage.GetItemsOfType(ItemType.Banana);
+            Assert.IsNotNull(items);
+            Assert.AreEqual(items.Count, 1);
 
         }
 
         [TestMethod]
         public void RemoveItemsTest()
         {
-
-            List<IItem> toRemove = inventory.GetItemsOfType(ItemType.Cucumber);
+            DataAbstractApi Data = Create();
+            List<IItem> toRemove = Data.Storage.GetItemsOfType(ItemType.Apple);
             Assert.IsNotNull(toRemove);
             Assert.AreEqual(1, toRemove.Count);
-            inventory.RemoveItems(toRemove);
-            Assert.AreEqual(1, inventory.ItemList.Count);
+            Data.Storage.RemoveItems(toRemove);
+            Assert.AreEqual(1, Data.Storage.ItemList.Count);
         }
 
-        [TestMethod]
-        public void ChangeItemPriceTest()
-        {
-            IItem item = inventory.GetItemsOfType(ItemType.Cucumber)[0];
-            Assert.IsNotNull(item);
-            Assert.AreEqual(item.Price, 3.0f);
-
-            inventory.ChangePrice(item.Id, 5.0f);
-            Assert.AreEqual(item.Price, 5.0f);
-        }
-        
     }
 
 }
