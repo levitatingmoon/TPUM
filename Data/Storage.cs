@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,8 +58,8 @@ namespace Data
         {
             lock (lockObject)
             {
-                foreach (var item in items)          
-                    AddItem(item);                    
+                foreach (ItemDTO item in items)          
+                    AddItem(item.ToItem());                    
             }
         }
 
@@ -107,6 +108,20 @@ namespace Data
             }
             return items;
         }
+
+        private void UpdatePrice(PriceChangedResponse response)
+        {
+            if (response == null) 
+                return;
+
+            lock (lockObject) {
+
+                ChangePrice(response.ItemID, response.Price);
+       
+            }
+
+        }
+
 
         public void ChangePrice(Guid id, float newPrice)
         {
@@ -162,44 +177,68 @@ namespace Data
 
         public async Task RequestItemsUpdate()
         {
-            await WebSocketClient.CurrentConnection.SendAsync("RequestAll");
+            Serializer serializer = Serializer.Create();
+            GetItemsCommand itemsCommand = new GetItemsCommand { Header = ServerStatics.GetItemsCommandHeader };
+
+            await WebSocketClient.CurrentConnection.SendAsync(serializer.Serialize(itemsCommand));
         }
+
+        private void UpdateAllProducts(UpdateAllResponse response)
+        {
+            if (response.Items != null)
+            {
+                lock (lockObject)
+                {
+                   ItemList.Clear();
+                    foreach (ItemDTO item in response.Items)
+                        AddItem(item.ToItem());
+                }
+            }
+        }
+
 
         private void ParseMessage(string message)
         {
-            if (message.Contains("UpdateAll"))
-            {
-                string json = message.Substring("UpdateAll".Length);
-                List<IItem> items = Serializer.JSONToStorage(json);          
-                AddItems(items);
-                waitingForStorageUpdate = false;
-            }
-            else if (message.Contains("TransactionResult"))
-            {
-                string resString = message.Substring("TransactionResult".Length);
-                transactionSuccess = resString[0] == '1';
+            Serializer serializer = Serializer.Create();
 
-                if (!transactionSuccess)
+            if (serializer.GetResponseHeader(message) == ServerStatics.UpdateAllResponseHeader) { 
+                UpdateAllResponse response = serializer.Deserialize<UpdateAllResponse>(message);
+                UpdateAllProducts(response);
+            }
+            else if (serializer.GetResponseHeader(message) == ServerStatics.PriceChangedResponseHeader)
+            {
+                PriceChangedResponse response = serializer.Deserialize<PriceChangedResponse>(message);
+                UpdatePrice(response);
+            }
+            else if (serializer.GetResponseHeader(message) == ServerStatics.TransactionResponseHeader)
+            {
+                TransactionResponse response = serializer.Deserialize<TransactionResponse>(message);
+                if (response.Succeeded)
+                {   
+                    //ventHandler<List<IItem>> handler = TransactionSucceeded;
+                    // handler?.Invoke(this, Serializer.JSONToStorage(resString.Substring(1)));
+                    Task.Run(() => RequestItems());
+                    //handler?.Invoke(this, e);
+                    Console.WriteLine("response Git ");
+                }
+                else
                 {
                     EventHandler handler = TransactionFailed;
                     handler?.Invoke(this, EventArgs.Empty);
                     RequestItemsUpdate();
                 }
-                else
-                {
-                    EventHandler<List<IItem>> handler = TransactionSucceeded;
-                    handler?.Invoke(this, Serializer.JSONToStorage(resString.Substring(1)));
-                }
+            }
 
                 waitingForSellResponse = false;
-            }
-            else if (message.Contains("PriceChanged"))
-            {
-                string priceChangedStr = message.Substring("PriceChanged".Length);
-                string[] parts = priceChangedStr.Split('/');
-                ChangePrice(Guid.Parse(parts[1]), float.Parse(parts[0]));
-            }
         }
+
+        public async Task RequestItems()
+        {
+            Serializer serializer = Serializer.Create();
+            GetItemsCommand itemsCommand = new GetItemsCommand { Header = ServerStatics.GetItemsCommandHeader };
+            await SendAsync(serializer.Serialize(itemsCommand));
+        }
+
 
         private async void Connected()
         {
@@ -216,9 +255,22 @@ namespace Data
 
         public async Task TryBuying(List<IItem> items)
         {
+            List<Guid> ids = new List<Guid>();
+
+            foreach (IItem item in items)
+            {
+                ids.Add(item.Id);
+            }
+
+            Serializer serializer = Serializer.Create();
+            SellItemCommand sellItemCommand = new SellItemCommand
+            {
+                Header = ServerStatics.SellItemCommandHeader,
+                Items = ids
+            };
+            await SendAsync(serializer.Serialize(sellItemCommand));
+
             waitingForSellResponse = true;
-            string json = Serializer.StorageToJSON(items);         
-            await WebSocketClient.CurrentConnection.SendAsync("RequestTransaction" + json);
         }
 
 

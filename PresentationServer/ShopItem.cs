@@ -7,11 +7,20 @@ using LogicServer;
 
 namespace PresentationServer
 {
-    internal class ShopItem : IShopItem
+    [Serializable]
+    public class ShopItem : IShopItem
     {
         public string Name { get; set; }
         public float Price { get; set; }
         public Guid Id { get; set; }
         public int Type { get; set; }
+
+        public ShopItem(string name, float price, Guid id, int type)
+        {
+            Name = name;
+            Price = price;
+            Id = id;
+            Type = type;
+        }
     }
 }

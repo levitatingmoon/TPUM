@@ -14,5 +14,7 @@ namespace LogicServer
         List<IShopItem> GetItems(bool onSale = true);
         bool Sell(List<IShopItem> items);
 
+        public void SellItems(List<Guid> itemIDs);
+
     }
 }

@@ -10,24 +10,17 @@ namespace PresentationServer
 {
     public abstract class Serializer
     {
-        public static string ItemToJSON(IShopItem item)
+        public abstract string Serialize<T>(T objectToSerialize);
+        public abstract T Deserialize<T>(string message);
+
+        public abstract string? GetResponseHeader(string message);
+        public abstract string? GetCommandHeader(string message);
+
+        public static Serializer Create()
         {
-            return JsonSerializer.Serialize(item);
+            return new JsonSerializer();
         }
 
-        public static IShopItem JSONToItem(string json)
-        {
-            return JsonSerializer.Deserialize<ShopItem>(json);
-        }
-
-        public static string StorageToJSON(List<IShopItem> items)
-        {
-            return JsonSerializer.Serialize(items);
-        }
-
-        public static List<IShopItem> JSONToStorage(string json)
-        {
-            return new List<IShopItem>(JsonSerializer.Deserialize<List<ShopItem>>(json));
-        }
     }
+
 }

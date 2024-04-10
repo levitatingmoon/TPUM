@@ -30,12 +30,20 @@ namespace Data
          
         }
 
+        public Item(Guid id, string name, float price, ItemType type)
+        {
+            Id = id;
+            Name = name;
+            Price = price;
+            Type = type;
+        }
+
 
         public Item(string name, float price, ItemType type)
         {
-            Name = name;
-            Price = price;
             Id = Guid.NewGuid();
+            Name = name;
+            Price = price;  
             Type = type;
         }
     }

@@ -6,6 +6,7 @@ using System.Net;
 using System.Globalization;
 using System.Threading.Tasks;
 using LogicServer;
+using System.Diagnostics.Tracing;
 
 namespace PresentationServer
 {
@@ -21,8 +22,24 @@ namespace PresentationServer
             shop = logicLayer.Shop;
             shop.PriceChanged += async (sender, eventArgs) =>
             {
-                if (WebSocketServer.CurrentConnection != null)
-                    await SendMessageAsync("PriceChanged" + eventArgs.Price.ToString() + "/" + eventArgs.Id.ToString());
+                if (WebSocketServer.CurrentConnection == null)
+                    return;
+
+                Console.WriteLine("Obnizka: " + eventArgs.Price);
+
+                List<IShopItem> items = logicLayer.Shop.GetItems();
+                PriceChangedResponse response = new PriceChangedResponse();
+                response.Price = eventArgs.Price;
+                response.ItemID  = eventArgs.Id;
+               
+                Serializer serializer = Serializer.Create();
+                string responseJson = serializer.Serialize(response);
+                Console.WriteLine(responseJson);
+
+                await SendMessageAsync(responseJson);
+
+
+                    //await SendMessageAsync("PriceChanged" + eventArgs.Price.ToString() + "/" + eventArgs.Id.ToString());
             };
             await WebSocketServer.Server(8081, ConnectionHandler);
         }
@@ -45,31 +62,50 @@ namespace PresentationServer
         static async void ParseMessage(string message)
         {
             Console.WriteLine($"[Client]: {message}");
-            if (message == "main page button click")
-                await SendMessageAsync("main page button click response");
 
-            if (message == "RequestAll")
-                await SendCurrentStorageState();
+            Serializer serializer = Serializer.Create();
 
-            if (message.Contains("RequestTransaction"))
+            if (serializer.GetCommandHeader(message) == GetItemsCommand.StaticHeader)
             {
-                var json = message.Substring("RequestTransaction".Length);
-                List<IShopItem> itemsToBuy = Serializer.JSONToStorage(json);
-                bool sellResult = shop.Sell(itemsToBuy);
-                int sellResultInt = sellResult ? 1 : 0;
+                GetItemsCommand getItemsCommand = serializer.Deserialize<GetItemsCommand>(message);
+                Task task = Task.Run(async () => await SendCurrentStorageState());
+            }
+            else if (serializer.GetCommandHeader(message) == SellItemCommand.StaticHeader)
+            {
+                SellItemCommand sellItemCommand = serializer.Deserialize<SellItemCommand>(message);
 
-                await SendMessageAsync("TransactionResult" + sellResultInt.ToString() + (sellResult ? json : ""));
+                TransactionResponse transactionResponse = new TransactionResponse();
+                
+                try
+                {
+                    Console.WriteLine("Sprzedanooo!!!");
+                    shop.SellItems(sellItemCommand.Items);
+                    transactionResponse.Succeeded = true;
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"Exception \"{exception.Message}\" caught during selling item");
+                    transactionResponse.Succeeded = false;
+                }
+
+                string transactionMessage = serializer.Serialize(transactionResponse);
+                Console.WriteLine($"Send: {transactionMessage}");
+                await SendMessageAsync(transactionMessage);
             }
         }
 
         static async Task SendCurrentStorageState()
         {
-            var items = shop.GetItems();
-            var json = Serializer.StorageToJSON(items);
-            var message = "UpdateAll" + json;
-
-            await SendMessageAsync(message);
+            UpdateAllResponse response = new UpdateAllResponse();
+            List<IShopItem> items = shop.GetItems();
+            response.Items = items.Select(x => x.ToDTO()).ToArray(); 
+            
+            Serializer serializer = Serializer.Create();
+            string responseJson = serializer.Serialize(response);
+            Console.WriteLine("Tutaj jest response Json: " + responseJson);
+            await SendMessageAsync(responseJson);
         }
+
 
         static async Task SendMessageAsync(string message)
         {
