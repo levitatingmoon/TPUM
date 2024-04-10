@@ -34,14 +34,12 @@ namespace PresentationServer
     {
         public static string StaticHeader = "RequestTransaction";
 
-        public Guid TransactionID { get; set; }
-        public Guid ItemID { get; set; }
+        public List<Guid>? Items { get; set; }
 
         public SellItemCommand(Guid id)
         : base(StaticHeader)
         {
-            TransactionID = Guid.NewGuid();
-            ItemID = id;
+
         }
     }
 

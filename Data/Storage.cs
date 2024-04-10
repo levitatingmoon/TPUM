@@ -243,9 +243,22 @@ namespace Data
 
         public async Task TryBuying(List<IItem> items)
         {
+            List<Guid> ids = new List<Guid>();
+
+            foreach (IItem item in items)
+            {
+                ids.Add(item.Id);
+            }
+
+            Serializer serializer = Serializer.Create();
+            SellItemCommand sellItemCommand = new SellItemCommand
+            {
+                Header = ServerStatics.SellItemCommandHeader,
+                Items = ids
+            };
+            await SendAsync(serializer.Serialize(sellItemCommand));
+
             waitingForSellResponse = true;
-            //string json = Serializer.StorageToJSON(items);         
-            //await WebSocketClient.CurrentConnection.SendAsync("RequestTransaction" + json);
         }
 
 

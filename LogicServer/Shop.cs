@@ -50,6 +50,8 @@ namespace LogicServer
             return availableItems;
         }
 
+
+
         public bool Sell(List<IShopItem> items)
         {
             lock (objectLock)
@@ -67,12 +69,13 @@ namespace LogicServer
             return true;
         }
 
-        public void SellItem(Guid itemId)
+        public void SellItems(List<Guid> itemIDs)
         {
-
-            
-
-            throw new NotImplementedException();
+            lock (objectLock)
+            {
+                List<IItem> itemsDataLayer = Storage.GetItemsByID(itemIDs);
+                Storage.RemoveItems(itemsDataLayer);
+            }
         }
 
         private void OnPriceChanged(object sender, DataServer.PriceChangedEventArgs e)

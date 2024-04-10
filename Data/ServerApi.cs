@@ -17,7 +17,7 @@ namespace Data
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "11.0.0.0 (Newtonsoft.Json v13.0.0.0)")]
-    public abstract partial class ServerCommand
+    public abstract class ServerCommand
     {
         [Newtonsoft.Json.JsonProperty("Header", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Header { get; set; }
@@ -31,14 +31,13 @@ namespace Data
 
     }
 
-    [GeneratedCode("NJsonSchema", "11.0.0.0 (Newtonsoft.Json v13.0.0.0)")]
-    internal class SellItemCommand : ServerCommand
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "11.0.0.0 (Newtonsoft.Json v13.0.0.0)")]
+    public partial class SellItemCommand : ServerCommand
     {
-        [JsonProperty("TransactionID", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Guid TransactionID { get; set; }
+        [Newtonsoft.Json.JsonProperty("Items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<System.Guid> Items { get; set; }
 
-        [JsonProperty("ItemID", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Guid ItemID { get; set; }
+
     }
 
 
