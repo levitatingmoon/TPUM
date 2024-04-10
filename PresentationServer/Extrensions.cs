@@ -12,13 +12,13 @@ namespace PresentationServer
             return new ArraySegment<byte>(buffer);
         }
 
-        public static ShopItem ToDTO(this IShopItem item)
+        public static ItemDTO ToDTO(this IShopItem item)
         {
-            return new ShopItem(          
-                item.Name,
-                item.Price,
+            return new ItemDTO(
                 item.Id,
-                item.Type
+                item.Name,
+                item.Type.ToString(),
+                item.Price
             );
         }
     }

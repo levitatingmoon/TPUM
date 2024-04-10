@@ -12,7 +12,7 @@ internal static class Program
     private static async Task Main(string[] args)
     {
         Console.WriteLine("JSON Schema: \n\n");
-        JsonSchema schema = JsonSchema.FromType<ShopItem>();
+        JsonSchema schema = JsonSchema.FromType<ItemDTO>();
         string schemaString = schema.ToJson();
 
         Console.WriteLine(schemaString);

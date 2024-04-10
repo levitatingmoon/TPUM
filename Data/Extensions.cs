@@ -16,15 +16,17 @@ namespace Data
             return (ItemType)Enum.Parse(typeof(ItemType), typeAsString);
         }
 
-        public static IItem ToItem(this ShopItem itemDTO)
+        public static string ToString(this ItemType typeAsString)
+        {
+            return Enum.GetName(typeof(ItemType), typeAsString) ?? throw new InvalidOperationException();
+        }
+        public static IItem ToItem(this ItemDTO itemDTO)
         {
             return new Item(
                 itemDTO.Name,
                 itemDTO.Price,
-                itemDTO.Id,
-                (ItemType)itemDTO.Type
-              
-            );
+                ItemTypeFromString(itemDTO.Type)
+            ) ;
         }
     }
 

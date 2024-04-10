@@ -10,24 +10,15 @@ namespace Data
 {
     public abstract class Serializer
     {
-        public static string ItemToJSON(IItem item)
-        {
-            return JsonConvert.SerializeObject(item);
-        }
+        public abstract string Serialize<T>(T objectToSerialize);
+        public abstract T Deserialize<T>(string message);
 
-        public static IItem JSONToItem(string json)
-        {
-            return JsonConvert.DeserializeObject<Item>(json);
-        }
+        public abstract string? GetResponseHeader(string message);
+        public abstract string? GetCommandHeader(string message);
 
-        public static string StorageToJSON(List<IItem> items)
+        public static Serializer Create()
         {
-            return JsonConvert.SerializeObject(items);
-        }
-
-        public static List<IItem> JSONToStorage(string json)
-        {
-            return new List<IItem>(JsonConvert.DeserializeObject<List<Item>>(json)!);
+            return new JsonSerializer();
         }
     }
 }

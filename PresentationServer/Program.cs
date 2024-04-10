@@ -45,13 +45,46 @@ namespace PresentationServer
         static async void ParseMessage(string message)
         {
             Console.WriteLine($"[Client]: {message}");
+
+            Serializer serializer = Serializer.Create();
+
+            if (serializer.GetCommandHeader(message) == GetItemsCommand.StaticHeader)
+            {
+                GetItemsCommand getItemsCommand = serializer.Deserialize<GetItemsCommand>(message);
+                Task task = Task.Run(async () => await SendCurrentStorageState());
+            }
+            else if (serializer.GetCommandHeader(message) == SellItemCommand.StaticHeader)
+            {
+                SellItemCommand sellItemCommand = serializer.Deserialize<SellItemCommand>(message);
+
+                TransactionResponse transactionResponse = new TransactionResponse();
+                transactionResponse.TransactionId = sellItemCommand.TransactionID;
+                try
+                {
+                    //shop.Sell(sellItemCommand.ItemID);
+                    transactionResponse.Succeeded = true;
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"Exception \"{exception.Message}\" caught during selling item");
+                    transactionResponse.Succeeded = false;
+                }
+
+                string transactionMessage = serializer.Serialize(transactionResponse);
+                Console.WriteLine($"Send: {transactionMessage}");
+                await SendMessageAsync(transactionMessage);
+            }
+
+
+
+
             if (message == "main page button click")
                 await SendMessageAsync("main page button click response");
 
-            if (message == "RequestAll")
-                await SendCurrentStorageState();
+            //if (message == "RequestAll")
+                
 
-            if (message.Contains("RequestTransaction"))
+/*            if (message.Contains("RequestTransaction"))
             {
                 var json = message.Substring("RequestTransaction".Length);
                 List<IShopItem> itemsToBuy = Serializer.JSONToStorage(json);
@@ -59,17 +92,20 @@ namespace PresentationServer
                 int sellResultInt = sellResult ? 1 : 0;
 
                 await SendMessageAsync("TransactionResult" + sellResultInt.ToString() + (sellResult ? json : ""));
-            }
+            }*/
         }
 
         static async Task SendCurrentStorageState()
         {
-            var items = shop.GetItems();
-            //var tempItems = items.Select(x=> x.ToDTO()).ToArray();
-            var json = Serializer.StorageToJSON(items);
-            var message = "UpdateAll" + json;
+            UpdateAllResponse response = new UpdateAllResponse();
+            List<IShopItem> items = shop.GetItems();
+            response.Items = items.Select(x => x.ToDTO()).ToArray(); 
+            
+            Serializer serializer = Serializer.Create();
+            string responseJson = serializer.Serialize(response);
+            Console.WriteLine("Tutaj jest response Json: " + responseJson);
+            await SendMessageAsync(responseJson);
 
-            await SendMessageAsync(message);
         }
 
         static async Task SendMessageAsync(string message)

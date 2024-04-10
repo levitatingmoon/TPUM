@@ -67,10 +67,19 @@ namespace LogicServer
             return true;
         }
 
+        public void SellItem(Guid itemId)
+        {
+
+            
+
+            throw new NotImplementedException();
+        }
+
         private void OnPriceChanged(object sender, DataServer.PriceChangedEventArgs e)
         {
             EventHandler<PriceChangedEventArgs> handler = PriceChanged;
             handler?.Invoke(this, new LogicServer.PriceChangedEventArgs(e.Id, e.Price));
         }
+
     }
 }
