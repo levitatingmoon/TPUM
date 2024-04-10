@@ -106,7 +106,7 @@ namespace PresentationServer
     }
 
     [Serializable]
-    public class InflationChangedResponse : ServerResponse
+    public class PriceChangedResponse : ServerResponse
     {
         public static readonly string StaticHeader = "PriceChanged";
 
@@ -114,7 +114,7 @@ namespace PresentationServer
 
         public Guid ItemID { get; set; }
 
-        public InflationChangedResponse()
+        public PriceChangedResponse()
             : base(StaticHeader)
         {
         }

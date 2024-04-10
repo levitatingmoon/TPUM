@@ -28,8 +28,9 @@ namespace PresentationServer
                 Console.WriteLine("Obnizka: " + eventArgs.Price);
 
                 List<IShopItem> items = logicLayer.Shop.GetItems();
-                InflationChangedResponse response = new InflationChangedResponse();
+                PriceChangedResponse response = new PriceChangedResponse();
                 response.Price = eventArgs.Price;
+                response.ItemID  = eventArgs.Id;
                
                 Serializer serializer = Serializer.Create();
                 string responseJson = serializer.Serialize(response);
@@ -91,25 +92,6 @@ namespace PresentationServer
                 Console.WriteLine($"Send: {transactionMessage}");
                 await SendMessageAsync(transactionMessage);
             }
-
-
-
-
-            if (message == "main page button click")
-                await SendMessageAsync("main page button click response");
-
-            //if (message == "RequestAll")
-                
-
-/*            if (message.Contains("RequestTransaction"))
-            {
-                var json = message.Substring("RequestTransaction".Length);
-                List<IShopItem> itemsToBuy = Serializer.JSONToStorage(json);
-                bool sellResult = shop.Sell(itemsToBuy);
-                int sellResultInt = sellResult ? 1 : 0;
-
-                await SendMessageAsync("TransactionResult" + sellResultInt.ToString() + (sellResult ? json : ""));
-            }*/
         }
 
         static async Task SendCurrentStorageState()

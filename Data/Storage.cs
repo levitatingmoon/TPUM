@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -108,7 +109,7 @@ namespace Data
             return items;
         }
 
-        private void UpdatePrice(InflationChangedResponse response)
+        private void UpdatePrice(PriceChangedResponse response)
         {
             if (response == null) 
                 return;
@@ -188,6 +189,7 @@ namespace Data
             {
                 lock (lockObject)
                 {
+                   ItemList.Clear();
                     foreach (ItemDTO item in response.Items)
                         AddItem(item.ToItem());
                 }
@@ -205,16 +207,18 @@ namespace Data
             }
             else if (serializer.GetResponseHeader(message) == ServerStatics.InflationChangedResponseHeader)
             {
-                InflationChangedResponse response = serializer.Deserialize<InflationChangedResponse>(message);
+                PriceChangedResponse response = serializer.Deserialize<PriceChangedResponse>(message);
                 UpdatePrice(response);
             }
             else if (serializer.GetResponseHeader(message) == ServerStatics.TransactionResponseHeader)
             {
                 TransactionResponse response = serializer.Deserialize<TransactionResponse>(message);
                 if (response.Succeeded)
-                {
-                    //EventHandler<List<IItem>> handler = TransactionSucceeded;
+                {   
+                    //ventHandler<List<IItem>> handler = TransactionSucceeded;
                     // handler?.Invoke(this, Serializer.JSONToStorage(resString.Substring(1)));
+                    Task.Run(() => RequestItems());
+                    //handler?.Invoke(this, e);
                     Console.WriteLine("response Git ");
                 }
                 else
@@ -227,6 +231,14 @@ namespace Data
 
                 waitingForSellResponse = false;
         }
+
+        public async Task RequestItems()
+        {
+            Serializer serializer = Serializer.Create();
+            GetItemsCommand itemsCommand = new GetItemsCommand { Header = ServerStatics.GetItemsCommandHeader };
+            await SendAsync(serializer.Serialize(itemsCommand));
+        }
+
 
         private async void Connected()
         {

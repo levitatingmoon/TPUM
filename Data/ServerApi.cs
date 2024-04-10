@@ -87,7 +87,7 @@ namespace Data
     }
 
     [GeneratedCode("NJsonSchema", "11.0.0.0 (Newtonsoft.Json v13.0.0.0)")]
-    internal class InflationChangedResponse : ServerResponse
+    internal class PriceChangedResponse : ServerResponse
     {
         [JsonProperty("Price", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
         public float Price { get; set; }

@@ -23,6 +23,7 @@ namespace Data
         public static IItem ToItem(this ItemDTO itemDTO)
         {
             return new Item(
+                itemDTO.Id,
                 itemDTO.Name,
                 itemDTO.Price,
                 ItemTypeFromString(itemDTO.Type)

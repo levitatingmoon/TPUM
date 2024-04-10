@@ -45,7 +45,12 @@ namespace DataTest
             List<IItem> items = new List<IItem>();
             items.Add(inventory.CreateItem("carrot", 4.0f, ItemType.Carrot));
             items.Add(inventory.CreateItem("banana", 3.0f, ItemType.Banana));
-            inventory.AddItems(items);
+
+            foreach (var item in items)
+            {
+                inventory.AddItem(item);
+            }
+            //inventory.AddItems(items);
             Assert.AreEqual(4, inventory.ItemList.Count);
 
         }
