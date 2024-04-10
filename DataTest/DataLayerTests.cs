@@ -62,6 +62,17 @@ namespace DataTest
             Assert.AreEqual(1, Data.Storage.ItemList.Count);
         }
 
+        [TestMethod]
+        public void RemoveItemTest()
+        {
+            DataAbstractApi Data = Create();
+            IItem toRemove = Data.Storage.GetItemsOfType(ItemType.Apple)[0];
+            Assert.IsNotNull(toRemove);
+            Data.Storage.RemoveItem(toRemove);
+            Assert.AreEqual(1, Data.Storage.ItemList.Count);
+        }
+
+
     }
 
 }
