@@ -205,7 +205,7 @@ namespace Data
                 UpdateAllResponse response = serializer.Deserialize<UpdateAllResponse>(message);
                 UpdateAllProducts(response);
             }
-            else if (serializer.GetResponseHeader(message) == ServerStatics.InflationChangedResponseHeader)
+            else if (serializer.GetResponseHeader(message) == ServerStatics.PriceChangedResponseHeader)
             {
                 PriceChangedResponse response = serializer.Deserialize<PriceChangedResponse>(message);
                 UpdatePrice(response);

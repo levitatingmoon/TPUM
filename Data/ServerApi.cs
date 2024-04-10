@@ -12,7 +12,7 @@ namespace Data
         public static readonly string SellItemCommandHeader = "RequestTransaction";
 
         public static readonly string UpdateAllResponseHeader = "UpdateAll";
-        public static readonly string InflationChangedResponseHeader = "PriceChanged";
+        public static readonly string PriceChangedResponseHeader = "PriceChanged";
         public static readonly string TransactionResponseHeader = "TransactionResult";
     }
 
