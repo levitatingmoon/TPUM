@@ -215,8 +215,6 @@ namespace Data
                 TransactionResponse response = serializer.Deserialize<TransactionResponse>(message);
                 if (response.Succeeded)
                 {   
-                    //ventHandler<List<IItem>> handler = TransactionSucceeded;
-                    // handler?.Invoke(this, Serializer.JSONToStorage(resString.Substring(1)));
                     Task.Run(() => RequestItems());
                     //handler?.Invoke(this, e);
                     Console.WriteLine("response Git ");

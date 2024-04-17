@@ -367,7 +367,6 @@ namespace ViewModel
 
         public void HandlePriceChanged(object sender, Model.PriceChangedEventArgs args)
         {
-            //RefreshItems();
 
             ObservableCollection<IItemVM> newItems = Items;
             IItemVM item = newItems.FirstOrDefault(x => x.Id == args.Id);

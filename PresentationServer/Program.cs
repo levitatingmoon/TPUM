@@ -38,8 +38,6 @@ namespace PresentationServer
 
                 await SendMessageAsync(responseJson);
 
-
-                    //await SendMessageAsync("PriceChanged" + eventArgs.Price.ToString() + "/" + eventArgs.Id.ToString());
             };
             await WebSocketServer.Server(8081, ConnectionHandler);
         }

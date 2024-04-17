@@ -13,9 +13,5 @@ namespace Data
         Guid Id { get; }
         ItemType Type { get; set;  }
 
-        //public static IItem Create(string name, float price, ItemType type)
-        //{
-            //return new Item(name, price, type);
-        //}
     }
 }
